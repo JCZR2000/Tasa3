@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tasas | V3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Roboto', 'sans-serif'] },
+                    colors: {
+                        primary: 'var(--color-primary)',
+                        onPrimary: '#ffffff',
+                        primaryContainer: 'var(--color-primary-container)',
+                        onPrimaryContainer: 'var(--color-on-primary-container)',
+                        surface: 'var(--color-surface)',
+                        surfaceVariant: 'var(--color-surface-variant)',
+                        onSurface: 'var(--color-on-surface)',
+                        outline: 'var(--color-outline)',
+                    },
+                    boxShadow: {
+                        'material': '0 4px 20px -2px rgba(0, 0, 0, 0.1), 0 1px 6px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            /* Variables Base */
+            --color-primary: #006a6a;
+            --color-primary-container: #6ff7f6;
+            --color-on-primary-container: #002020;
+            --color-surface: #fafdfc;
+            --color-surface-variant: #dbe4e6;
+            --color-on-surface: #191c1c;
+            --color-outline: #6f7979;
+            --bg-body: #f0f4f5;
+            /* Color base por defecto */
+            --toggle-bg: #d1e5e4;
+        }
+
+        .dark {
+            --color-surface: #1e1e1e;
+            --color-surface-variant: #2c2c2c;
+            --color-on-surface: #e1e1e1;
+            --color-outline: #8e918f;
+            --bg-body: #121212;
+            --toggle-bg: #444746;
+        }
+
+        body {
+            /* Usamos la variable pero permitimos que JS la sobreescriba con el tinte */
+            background-color: var(--bg-body);
+            transition: background-color 0.5s ease;
+        }
+
+        /* Animación labels inputs */
+        .material-input:focus~label,
+        .material-input:not(:placeholder-shown)~label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: var(--color-primary);
+        }
+
+        /* Input Number limpio */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Input Number limpio */
+        input::-webkit-outer-spin-button, 
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+
+        /* Icono rotativo */
+        .rotate-icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="absolute top-4 right-4 z-50">
+        <button onclick="toggleSettings()"
+            class="p-2 rounded-full bg-surface shadow-md text-onSurface hover:bg-surfaceVariant transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </button>
+
+        <div id="settings-menu"
+            class="hidden absolute right-0 mt-2 w-56 bg-surface rounded-2xl shadow-material p-4 border border-outline/10 backdrop-blur-md">
+            <div class="relative z-10">
+                <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-4">Configuración</h3>
+                <div class="flex items-center justify-between mb-5 cursor-pointer group" onclick="toggleDarkMode()">
+                    <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-onSurface">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                        </svg>
+                        <span class="text-sm font-medium text-onSurface">Modo Oscuro</span>
+                    </div>
+                    <div id="dark-toggle-bg" class="w-11 h-6 rounded-full relative transition-colors duration-300"
+                        style="background-color: var(--toggle-bg);">
+                        <div class="absolute w-4 h-4 bg-white rounded-full top-1 left-1 shadow-sm transition-transform duration-300"
+                            id="dark-toggle-dot"></div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="flex items-center gap-3 mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-onSurface">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.85 6.361a15.996 15.996 0 00-4.647 4.763m0 0c-.393.393-.78.77-1.164 1.128-.27.248-.482.492-.66.721" />
+                        </svg>
+                        <span class="text-sm font-medium text-onSurface">Color de Tema</span>
+                    </div>
+                    <div class="flex gap-3 justify-between px-1">
+                        <button onclick="setTheme('#006a6a')"
+                            class="w-6 h-6 rounded-full bg-[#006a6a] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                        <button onclick="setTheme('#005cbb')"
+                            class="w-6 h-6 rounded-full bg-[#005cbb] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                        <button onclick="setTheme('#8d4386')"
+                            class="w-6 h-6 rounded-full bg-[#8d4386] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                        <button onclick="setTheme('#b53d00')"
+                            class="w-6 h-6 rounded-full bg-[#b53d00] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                        <button onclick="setTheme('#4b650b')"
+                            class="w-6 h-6 rounded-full bg-[#4b650b] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main
+        class="w-full max-w-md bg-surface rounded-[32px] shadow-material overflow-hidden p-6 relative transition-colors duration-300">
+
+        <header class="mb-6 text-center">
+            <div
+                class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primaryContainer text-onPrimaryContainer mb-2 shadow-sm transition-colors">
+                <span class="font-bold text-xl">$</span>
+            </div>
+            <h1 class="text-2xl font-bold text-onSurface transition-colors">Calculadora de Cambio</h1>
+            <p class="text-sm text-outline mt-1 transition-colors" id="status-text">Cargando tasas...</p>
+        </header>
+
+        <div class="flex bg-surfaceVariant rounded-2xl p-1 mb-6 overflow-hidden transition-colors">
+            <button onclick="setCurrency('dolar')" id="tab-dolar"
+                class="flex-1 py-2 text-sm font-medium rounded-xl transition-all duration-200 text-onSurface">Dólar
+                BCV</button>
+            <button onclick="setCurrency('euro')" id="tab-euro"
+                class="flex-1 py-2 text-sm font-medium rounded-xl transition-all duration-200 text-onSurface opacity-70">Euro
+                BCV</button>
+            <button onclick="setCurrency('usdt')" id="tab-usdt"
+                class="flex-1 py-2 text-sm font-medium rounded-xl transition-all duration-200 text-onSurface opacity-70">USDT</button>
+        </div>
+
+        <div id="inputs-container" class="flex flex-col gap-3 relative">
+        
+            <div id="input-group-top"
+                class="order-1 relative bg-surfaceVariant/30 rounded-xl border border-outline/10 hover:bg-surfaceVariant/60 transition-colors mt-4">
+                <span id="label-top"
+                    class="absolute -top-3 left-4 px-2 py-0.5 text-xs font-bold text-onPrimary bg-primary rounded-md shadow-sm z-10 transition-all duration-300 pointer-events-none">
+                    Monto en USD
+                </span>
+                <input type="number" id="input-top" placeholder="0.00"
+                    class="material-input block px-4 pt-5 pb-2 w-full text-lg bg-transparent border-0 appearance-none focus:outline-none focus:ring-0 peer text-onSurface font-mono transition-colors" />
+                <div class="absolute right-4 top-4 text-xs font-bold text-primary transition-colors" id="symbol-top">USD</div>
+            </div>
+        
+            <div class="order-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                <button onclick="toggleDirection()" id="swap-btn"
+                    class="bg-primary text-onPrimary rounded-full p-2 shadow-md hover:shadow-lg active:scale-95 transition-all border-4 border-surface"
+                    title="Intercambiar dirección">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 rotate-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+                    </svg>
+                </button>
+            </div>
+        
+            <div id="input-group-bottom"
+                class="order-3 relative bg-surfaceVariant/30 rounded-xl border border-outline/10 hover:bg-surfaceVariant/60 transition-colors mt-4">
+                <span id="label-bottom"
+                    class="absolute -top-3 left-4 px-2 py-0.5 text-xs font-bold text-onPrimary bg-primary rounded-md shadow-sm z-10 transition-all duration-300 pointer-events-none">
+                    Monto en Bolívares
+                </span>
+                <input type="number" id="input-bottom" placeholder="0.00"
+                    class="material-input block px-4 pt-5 pb-2 w-full text-lg bg-transparent border-0 appearance-none focus:outline-none focus:ring-0 peer text-onSurface font-mono transition-colors" />
+                <div class="absolute right-4 top-4 text-xs font-bold text-primary transition-colors" id="symbol-bottom">VES
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="mt-8 text-center">
+            <span
+                class="inline-block px-4 py-1.5 rounded-full bg-surfaceVariant text-xs font-medium text-onSurface transition-colors shadow-sm border border-outline/10">
+                Tasa: <span id="rate-display">...</span>
+            </span>
+        </div>
+
+        <div class="absolute top-6 right-6">
+            <button onclick="fetchData()" id="refresh-btn"
+                class="p-2 rounded-full bg-primaryContainer text-onPrimaryContainer hover:shadow-lg transition-all active:scale-95">
+                <svg id="refresh-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                <div id="loading-spinner" class="loader hidden"></div>
+            </button>
+        </div>
+
+        <footer class="mt-8 pt-4 border-t border-surfaceVariant text-center transition-colors">
+            <p class="text-xs text-outline">Última actualización: <span id="last-updated">--:--</span></p>
+        </footer>
+
+    </main>
+
+    <div id="error-toast"
+        class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg transition-opacity duration-300 opacity-0 pointer-events-none flex items-center gap-2 z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+        <span id="error-msg">Error</span>
+    </div>
+
+    <script>
+        // Config
+        const API_URL = 'https://raw.githubusercontent.com/JCZR2000/ComercioPrecioAPI/main/tasas_cambio.json';
+        let rates = { dolar: 0, euro: 0, usdt: 0 };
+        let currentCurrency = 'dolar';
+        let isBsOnTop = false;
+
+        // UI Refs
+        const ui = {
+            inputTop: document.getElementById('input-top'),
+            inputBottom: document.getElementById('input-bottom'),
+            labelTop: document.getElementById('label-top'),
+            labelBottom: document.getElementById('label-bottom'),
+            symbolTop: document.getElementById('symbol-top'),
+            symbolBottom: document.getElementById('symbol-bottom'),
+            rateDisplay: document.getElementById('rate-display'),
+            lastUpdated: document.getElementById('last-updated'),
+            status: document.getElementById('status-text'),
+            refreshIcon: document.getElementById('refresh-icon'),
+            spinner: document.getElementById('loading-spinner'),
+            errorToast: document.getElementById('error-toast'),
+            settingsMenu: document.getElementById('settings-menu'),
+            swapIcon: document.querySelector('.rotate-icon'),
+            darkToggleBg: document.getElementById('dark-toggle-bg'),
+            darkToggleDot: document.getElementById('dark-toggle-dot')
+        };
+
+        async function fetchData() {
+            setLoading(true);
+            try {
+                const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
+                if (!response.ok) throw new Error("Error API");
+                const data = await response.json();
+                if (data.dolar && data.euro && data.usdt) {
+                    rates = data;
+                    updateUIInfo();
+                    recalculate();
+                }
+            } catch (error) {
+                console.error(error);
+                ui.status.innerText = "Error conexión";
+                showError("No se pudieron cargar las tasas");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function calculate(sourceInput) {
+            const rate = rates[currentCurrency];
+            if (!rate || rate === 0) return;
+            const topVal = parseFloat(ui.inputTop.value);
+            const botVal = parseFloat(ui.inputBottom.value);
+
+            if (sourceInput === 'top') {
+                if (isNaN(topVal)) { ui.inputBottom.value = ''; return; }
+                ui.inputBottom.value = (!isBsOnTop ? topVal * rate : topVal / rate).toFixed(2);
+            } else {
+                if (isNaN(botVal)) { ui.inputTop.value = ''; return; }
+                ui.inputTop.value = (!isBsOnTop ? botVal / rate : botVal * rate).toFixed(2);
+            }
+        }
+
+        function toggleDirection() {
+            isBsOnTop = !isBsOnTop;
+            // Swap values
+            const oldTop = ui.inputTop.value;
+            ui.inputTop.value = ui.inputBottom.value;
+            ui.inputBottom.value = oldTop;
+
+            // UI updates
+            ui.swapIcon.style.transform = isBsOnTop ? 'rotate(180deg)' : 'rotate(0deg)';
+            updateLabels();
+        }
+
+        function updateLabels() {
+            const curInfo = getCurrencyInfo(currentCurrency);
+            if (!isBsOnTop) {
+                ui.labelTop.textContent = curInfo.label;
+                ui.symbolTop.textContent = curInfo.symbol;
+                ui.labelBottom.textContent = "Monto en Bolívares";
+                ui.symbolBottom.textContent = "VES";
+            } else {
+                ui.labelTop.textContent = "Monto en Bolívares";
+                ui.symbolTop.textContent = "VES";
+                ui.labelBottom.textContent = curInfo.label;
+                ui.symbolBottom.textContent = curInfo.symbol;
+            }
+        }
+
+        function getCurrencyInfo(c) {
+            if (c === 'dolar') return { label: "Monto en USD", symbol: "USD" };
+            if (c === 'euro') return { label: "Monto en EUR", symbol: "EUR" };
+            if (c === 'usdt') return { label: "Monto en USDT", symbol: "USDT" };
+        }
+
+        function setCurrency(currency) {
+            currentCurrency = currency;
+            ['dolar', 'euro', 'usdt'].forEach(c => {
+                const tab = document.getElementById(`tab-${c}`);
+                const isActive = c === currency;
+                tab.className = isActive
+                    ? `flex-1 py-2 text-sm font-medium rounded-xl transition-all duration-200 text-primary bg-white shadow-sm dark:bg-white/10 dark:text-primary`
+                    : `flex-1 py-2 text-sm font-medium rounded-xl transition-all duration-200 text-onSurface opacity-70 hover:bg-surfaceVariant/50`;
+            });
+            updateLabels();
+            updateUIInfo();
+            recalculate();
+        }
+
+        function recalculate() { if (ui.inputTop.value) calculate('top'); }
+
+        // --- THEME & SETTINGS ---
+
+        function toggleSettings() { ui.settingsMenu.classList.toggle('hidden'); }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            if (isDark) {
+                ui.darkToggleDot.style.transform = 'translateX(20px)';
+                ui.darkToggleBg.style.backgroundColor = 'var(--color-primary)';
+            } else {
+                ui.darkToggleDot.style.transform = 'translateX(0)';
+                ui.darkToggleBg.style.backgroundColor = 'var(--toggle-bg)';
+            }
+            localStorage.setItem('themeMode', isDark ? 'dark' : 'light');
+            updateBodyTint();
+        }
+
+        function setTheme(color) {
+            const root = document.documentElement;
+            root.style.setProperty('--color-primary', color);
+            root.style.setProperty('--color-primary-container', color + '33');
+            root.style.setProperty('--color-on-primary-container', color);
+
+            const lightToggleColor = color + '25';
+            root.style.setProperty('--toggle-bg', document.documentElement.classList.contains('dark') ? '#444746' : lightToggleColor);
+
+            localStorage.setItem('themeColor', color);
+
+            // Forzar actualización visual del toggle
+            if (!document.documentElement.classList.contains('dark')) {
+                ui.darkToggleBg.style.backgroundColor = lightToggleColor;
+            } else if (ui.darkToggleDot.style.transform.includes('20px')) {
+                ui.darkToggleBg.style.backgroundColor = color;
+            }
+
+            updateBodyTint();
+        }
+
+        // NUEVO: Función para teñir el fondo dinámicamente
+        function updateBodyTint() {
+            const color = localStorage.getItem('themeColor') || '#006a6a';
+            const isDark = document.documentElement.classList.contains('dark');
+
+            if (isDark) {
+                // En modo oscuro, fondo oscuro estándar
+                document.body.style.backgroundColor = '#121212';
+            } else {
+                // En modo claro, usamos 'color-mix' de CSS moderno para mezclar el color base con el tema
+                // Si el navegador es viejo, fallará silenciosamente al gris por defecto
+                document.body.style.backgroundColor = `color-mix(in srgb, ${color}, #f0f4f5 95%)`;
+            }
+        }
+
+        // Helpers
+        function updateUIInfo() {
+            ui.lastUpdated.innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const rate = rates[currentCurrency];
+            ui.rateDisplay.innerText = `1 ${currentCurrency === 'dolar' ? 'USD' : currentCurrency.toUpperCase()} = ${formatNumber(rate)} Bs`;
+        }
+        function setLoading(isLoading) {
+            ui.refreshIcon.classList.toggle('hidden', isLoading);
+            ui.spinner.classList.toggle('hidden', !isLoading);
+            if (isLoading) ui.status.innerText = "Actualizando..."; else ui.status.innerText = "Tasas actualizadas";
+        }
+        function formatNumber(num) { return new Intl.NumberFormat('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num); }
+        function showError(msg) {
+            if (msg) {
+                document.getElementById('error-msg').innerText = msg;
+                ui.errorToast.classList.remove('opacity-0', 'pointer-events-none');
+                setTimeout(() => ui.errorToast.classList.add('opacity-0', 'pointer-events-none'), 4000);
+            }
+        }
+
+        // Listeners
+        document.addEventListener('click', (e) => {
+            if (!ui.settingsMenu.contains(e.target) && !e.target.closest('button[onclick="toggleSettings()"]')) {
+                ui.settingsMenu.classList.add('hidden');
+            }
+        });
+        ui.inputTop.addEventListener('input', () => calculate('top'));
+        ui.inputBottom.addEventListener('input', () => calculate('bottom'));
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            const savedColor = localStorage.getItem('themeColor');
+            if (savedColor) setTheme(savedColor);
+
+            const savedMode = localStorage.getItem('themeMode');
+            if (savedMode === 'dark') {
+                document.documentElement.classList.add('dark');
+                ui.darkToggleDot.style.transform = 'translateX(20px)';
+                ui.darkToggleBg.style.backgroundColor = savedColor || '#006a6a';
+            }
+            updateBodyTint(); // Aplicar el tinte inicial
+            setCurrency('dolar');
+        });
+    </script>
+</body>
+
+</html>
