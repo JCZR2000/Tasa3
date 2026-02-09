@@ -183,6 +183,18 @@
                     </div>
                     <span class="text-sm font-medium text-onSurface">Compra en Banco</span>
                 </button>
+                <button onclick="openGapModal()"
+                    class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group mt-1">
+                    <div
+                        class="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-onSurface">Brecha y Promedio</span>
+                </button>
             </div>
         </div>
     </div>
@@ -504,6 +516,75 @@
     
                 <div class="h-1"></div>
             </div>
+        </div>
+    </div>
+
+    <div id="gap-modal" class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0" id="gap-backdrop"
+            onclick="closeGapModal()"></div>
+    
+        <div class="relative w-full sm:w-[400px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
+            id="gap-content">
+    
+            <div class="flex justify-between items-center p-6 pb-2">
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-onSurface leading-tight">Indicadores</h2>
+                        <p class="text-xs text-outline">BCV vs Paralelo (USDT)</p>
+                    </div>
+                </div>
+                <button onclick="closeGapModal()"
+                    class="p-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+    
+            <div class="p-6 flex flex-col gap-4">
+    
+                <div class="p-5 rounded-2xl border flex flex-col items-center text-center gap-1 relative overflow-hidden"
+                    style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
+    
+                    <span class="text-sm font-bold text-primary uppercase tracking-wider opacity-80">Tasa Promedio</span>
+                    <span class="text-4xl font-bold text-primary font-mono tracking-tight my-2" id="gap-avg-val">0.00</span>
+                    <span class="text-xs text-primary/70 font-medium">Bolívares por Dólar</span>
+    
+                    <button onclick="useAverageRate()"
+                        class="mt-4 flex items-center gap-2 px-4 py-2 bg-primary text-onPrimary rounded-full text-sm font-bold shadow-md hover:shadow-lg active:scale-95 transition-all">
+                        <span>Usar esta Tasa</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+                        </svg>
+                    </button>
+                </div>
+    
+                <div
+                    class="p-5 rounded-2xl border border-outline/10 bg-surfaceVariant/30 flex flex-col items-center text-center gap-1 relative">
+                    <span class="text-sm font-bold text-onSurface opacity-70 uppercase tracking-wider">Brecha
+                        Cambiaria</span>
+                    <div class="flex items-baseline gap-1 my-1">
+                        <span class="text-3xl font-bold text-onSurface font-mono" id="gap-percent">0.00</span>
+                        <span class="text-xl font-bold text-primary">%</span>
+                    </div>
+                    <p class="text-xs text-outline px-4">
+                        Diferencia porcentual entre el Dólar BCV y el mercado paralelo (Binance).
+                    </p>
+                </div>
+    
+            </div>
+            <div class="h-2"></div>
         </div>
     </div>
 
@@ -1077,6 +1158,77 @@
                 document.getElementById('res-total').innerText = new Intl.NumberFormat('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(displayTotal);
             }
         }
+
+        // --- LOGICA DEL MODAL BRECHA Y PROMEDIO ---
+        
+        let calculatedAvg = 0;
+
+        function openGapModal() {
+            const modal = document.getElementById('gap-modal');
+            const backdrop = document.getElementById('gap-backdrop');
+            const content = document.getElementById('gap-content');
+            
+            // Cálculos
+            const rateBCV = rates.dolar;
+            const rateParalelo = rates.usdt;
+            
+            if (rateBCV > 0 && rateParalelo > 0) {
+                // 1. Promedio
+                calculatedAvg = (rateBCV + rateParalelo) / 2;
+                document.getElementById('gap-avg-val').innerText = formatNumber(calculatedAvg);
+                
+                // 2. Brecha ((Mayor - Menor) / Menor) * 100
+                // Generalmente Paralelo > BCV, pero usamos Math.abs por si acaso
+                const diff = rateParalelo - rateBCV;
+                const gap = (diff / rateBCV) * 100;
+                
+                document.getElementById('gap-percent').innerText = gap.toFixed(2);
+                
+                // Color dinámico de la brecha (Verde si es baja, Rojo si es alta)
+                const gapText = document.getElementById('gap-percent');
+                if (gap > 20) gapText.className = "text-3xl font-bold text-red-500 font-mono"; // Alta brecha
+                else if (gap > 10) gapText.className = "text-3xl font-bold text-orange-500 font-mono"; // Media
+                else gapText.className = "text-3xl font-bold text-primary font-mono"; // "Sana" (usamos color tema)
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                content.classList.remove('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+            }, 10);
+            
+            toggleSettings();
+        }
+
+        function closeGapModal() {
+            const modal = document.getElementById('gap-modal');
+            const backdrop = document.getElementById('gap-backdrop');
+            const content = document.getElementById('gap-content');
+
+            backdrop.classList.add('opacity-0');
+            content.classList.add('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function useAverageRate() {
+            // Activar pestaña Personalizada
+            setCurrency('custom');
+            
+            // Poner el valor en el input
+            // Nota: El input es type="number", usamos punto como decimal estándar en el value
+            ui.inputCustomRate.value = calculatedAvg.toFixed(2);
+            
+            // Forzar recálculo
+            recalculate();
+            
+            // Notificar al usuario
+            showToast("Tasa promedio aplicada", "success");
+            
+            // Cerrar modal
+            closeGapModal();
+        }
+        
     </script>
 </body>
 
