@@ -183,6 +183,29 @@
                     </div>
                     <span class="text-sm font-medium text-onSurface">Compra en Banco</span>
                 </button>
+                <button onclick="openCardModal()"
+                    class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group mt-1">
+                    <div
+                        class="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-onSurface">Comisión Tarjeta</span>
+                </button>
+                <button onclick="openWalletModal()"
+                    class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group mt-1">
+                    <div
+                        class="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="w-5 h-5">
+                            <path
+                                d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V192c0-35.3-28.7-64-64-64H80c-8.8 0-16-7.2-16-16s7.2-16 16-16H448c17.7 0 32-14.3 32-32s-14.3-32-32-32H64zM416 272a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-onSurface">Recarga a Wallets</span>
+                </button>
                 <button onclick="openGapModal()"
                     class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group mt-1">
                     <div
@@ -585,6 +608,223 @@
     
             </div>
             <div class="h-2"></div>
+        </div>
+    </div>
+
+    <div id="card-modal" class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0" id="card-backdrop"
+            onclick="closeCardModal()"></div>
+    
+        <div class="relative w-full sm:w-[400px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
+            id="card-content">
+    
+            <div class="flex justify-between items-center p-6 pb-2">
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-onSurface leading-tight">Comisión Tarjeta</h2>
+                        <p class="text-xs text-outline">Pagos Internacionales</p>
+                    </div>
+                </div>
+                <button onclick="closeCardModal()"
+                    class="p-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+    
+            <div class="p-6 flex flex-col gap-5">
+    
+                <div>
+                    <label class="text-xs font-bold text-primary ml-1">Monto a Pagar ($)</label>
+                    <div
+                        class="relative mt-1 bg-surfaceVariant/30 rounded-xl border border-outline/10 transition-all focus-within:border-primary/50 focus-within:bg-surfaceVariant/50">
+                        <input type="number" id="card-amount" placeholder="0"
+                            class="material-input block px-4 py-3 w-full bg-transparent border-0 focus:ring-0 text-onSurface font-mono text-xl font-bold"
+                            oninput="calculateCard()">
+                        <span
+                            class="absolute right-4 top-4 text-xs font-bold text-outline bg-surfaceVariant/50 px-2 py-1 rounded-md">USD</span>
+                    </div>
+                </div>
+    
+                <div>
+                    <label class="text-xs font-bold text-primary ml-1">Porcentaje de Comisión</label>
+                    <div class="flex gap-2 mt-1">
+                        <button onclick="setCardCommission(1.5)" id="btn-card-15"
+                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all">1.5%</button>
+                        <button onclick="setCardCommission(2.5)" id="btn-card-25"
+                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all">2.5%</button>
+                    </div>
+                </div>
+    
+                <div class="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden"
+                    style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
+    
+                    <div
+                        class="absolute -left-6 -bottom-6 w-24 h-24 bg-primary/10 rounded-full blur-xl pointer-events-none">
+                    </div>
+    
+                    <div class="flex justify-between text-sm relative z-10">
+                        <span class="text-onSurface opacity-70" id="card-comm-label">Comisión (1.5%):</span>
+                        <span class="font-mono text-error font-bold" id="card-comm-usd">$0.00</span>
+                    </div>
+    
+                    <div class="flex justify-between items-end relative z-10 pb-3 border-b border-primary/20">
+                        <span class="text-sm font-bold text-primary">Total en Cuenta:</span>
+                        <div class="text-right">
+                            <span class="block text-xl font-bold text-primary font-mono leading-none"
+                                id="card-total-usd">$0.00</span>
+                            <span class="text-[10px] text-primary font-bold opacity-80">Necesario en USD</span>
+                        </div>
+                    </div>
+    
+                    <div class="pt-1 relative z-10">
+                        <span class="text-xs text-onSurface opacity-70 block mb-1">Si cobran comisión en Bolívares:</span>
+                        <div
+                            class="flex justify-between items-center bg-surface/50 p-2 rounded-lg border border-primary/10">
+                            <span class="text-xs font-bold text-primary">Monto a Debitar:</span>
+                            <span class="font-mono text-onSurface font-bold" id="card-comm-bs">0.00 Bs</span>
+                        </div>
+                        <p class="text-[10px] text-outline mt-1 text-right italic">*Calculado a Tasa BCV</p>
+                    </div>
+                </div>
+    
+            </div>
+            <div class="h-2"></div>
+        </div>
+    </div>
+
+    <div id="wallet-modal" class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0" id="wallet-backdrop"
+            onclick="closeWalletModal()"></div>
+    
+        <div class="relative w-full sm:w-[480px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[90vh] transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
+            id="wallet-content">
+    
+            <div class="flex justify-between items-start p-6 pb-2 shrink-0">
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="w-7 h-7">
+                            <path
+                                d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V192c0-35.3-28.7-64-64-64H80c-8.8 0-16-7.2-16-16s7.2-16 16-16H448c17.7 0 32-14.3 32-32s-14.3-32-32-32H64zM416 272a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-onSurface leading-tight">Recarga a Wallets</h2>
+                        <button onclick="toggleWalletMode()" class="flex items-center gap-1.5 mt-1 group">
+                            <span
+                                class="text-xs font-bold text-primary underline decoration-dotted underline-offset-4 group-hover:text-primary/80 transition-colors"
+                                id="wallet-mode-label">
+                                Modo: Quiero que lleguen
+                            </span>
+                            <div
+                                class="p-0.5 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-onPrimary transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-3 h-3">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M7.5 21 3 16.5m0 0 4.5-4.5M3 16.5h13.5m0-13.5v9m0 0 4.5-4.5M12 12l4.5 4.5" />
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <button onclick="closeWalletModal()"
+                    class="p-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+    
+            <div class="flex flex-col gap-4 overflow-y-auto p-6 pt-2">
+    
+                <div>
+                    <label class="text-xs font-bold text-primary ml-1" id="wallet-input-label">Monto Exacto a Recibir
+                        ($)</label>
+                    <div
+                        class="relative mt-1 bg-surfaceVariant/30 rounded-xl border border-outline/10 transition-all focus-within:border-primary/50 focus-within:bg-surfaceVariant/50">
+                        <input type="number" id="wallet-amount" placeholder="0"
+                            class="material-input block px-4 py-3 w-full bg-transparent border-0 focus:ring-0 text-onSurface font-mono text-xl font-bold"
+                            oninput="calculateWallet()">
+                        <span
+                            class="absolute right-4 top-4 text-xs font-bold text-outline bg-surfaceVariant/50 px-2 py-1 rounded-md">USD</span>
+                    </div>
+                </div>
+    
+                <div>
+                    <label class="text-xs font-bold text-primary ml-1">Billetera de Destino</label>
+                    <div class="grid grid-cols-3 gap-2 mt-1">
+                        <button onclick="setWalletMethod('wally')" id="btn-wallet-wally"
+                            class="py-2 px-2 rounded-xl text-xs sm:text-[13px] font-bold border border-transparent transition-all bg-primary text-onPrimary shadow-md leading-tight">Wally</button>
+                        <button onclick="setWalletMethod('zinli')" id="btn-wallet-zinli"
+                            class="py-2 px-2 rounded-xl text-xs sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant leading-tight">Zinli</button>
+                        <button onclick="setWalletMethod('mercantil')" id="btn-wallet-mercantil"
+                            class="py-2 px-2 rounded-xl text-[11px] sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant leading-tight">Mercantil
+                            P.</button>
+                    </div>
+                </div>
+    
+                <div>
+                    <label class="text-xs font-bold text-primary ml-1">Comisión Tarjeta Nacional</label>
+                    <div class="flex gap-2 mt-1">
+                        <button onclick="setWalletCardComm(0)" id="btn-wallet-card-0"
+                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all">0%</button>
+                        <button onclick="setWalletCardComm(1.5)" id="btn-wallet-card-15"
+                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all shadow-sm">1.5%</button>
+                        <button onclick="setWalletCardComm(2.5)" id="btn-wallet-card-25"
+                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all">2.5%</button>
+                    </div>
+                </div>
+    
+                <div class="mt-2 p-5 rounded-2xl border transition-colors flex flex-col gap-2 relative overflow-hidden shrink-0"
+                    style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
+    
+                    <div
+                        class="absolute -right-6 -bottom-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+    
+                    <div class="flex justify-between items-center text-sm relative z-10">
+                        <span class="text-onSurface font-medium" id="res-wall-row1-label">Llega a la Wallet:</span>
+                        <span class="font-mono text-onSurface font-bold text-lg" id="res-wall-row1">$0.00</span>
+                    </div>
+    
+                    <div class="flex justify-between text-sm relative z-10 mt-1">
+                        <span class="text-onSurface opacity-70" id="res-wall-comm-label">Comisión Wallet:</span>
+                        <span class="font-mono text-error" id="res-wall-comm">$0.00</span>
+                    </div>
+    
+                    <div class="flex justify-between items-start text-sm relative z-10 pt-2 border-t border-primary/10">
+                        <span class="text-onSurface opacity-70 mt-0.5" id="res-wall-card-label">Comisión TDD Nac.:</span>
+                        <div class="text-right">
+                            <span class="font-mono text-error block leading-none" id="res-wall-card-comm">$0.00</span>
+                            <span class="text-[10px] text-onSurface opacity-60 font-medium mt-1 hidden"
+                                id="res-wall-card-bs">0.00 Bs</span>
+                        </div>
+                    </div>
+    
+                    <div class="h-px bg-primary/20 my-1 relative z-10"></div>
+    
+                    <div class="flex justify-between items-end relative z-10">
+                        <span class="text-sm font-bold text-primary" id="res-wall-main-label">Total a Pagar:</span>
+                        <div class="text-right">
+                            <span class="block text-3xl font-bold text-primary font-mono leading-none"
+                                id="res-wall-main">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-1"></div>
         </div>
     </div>
 
@@ -1228,7 +1468,227 @@
             // Cerrar modal
             closeGapModal();
         }
+
+        // --- LOGICA DEL MODAL TARJETA ---
         
+        let currentCardCommission = 1.5; // Porcentaje por defecto
+
+        function openCardModal() {
+            const modal = document.getElementById('card-modal');
+            const backdrop = document.getElementById('card-backdrop');
+            const content = document.getElementById('card-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                content.classList.remove('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+            }, 10);
+            
+            toggleSettings();
+            calculateCard();
+        }
+
+        function closeCardModal() {
+            const modal = document.getElementById('card-modal');
+            const backdrop = document.getElementById('card-backdrop');
+            const content = document.getElementById('card-content');
+
+            backdrop.classList.add('opacity-0');
+            content.classList.add('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function setCardCommission(pct) {
+            currentCardCommission = pct;
+            
+            // Actualizar interfaz de los botones
+            const btn15 = document.getElementById('btn-card-15');
+            const btn25 = document.getElementById('btn-card-25');
+            
+            const activeClass = "flex-1 py-2 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all";
+            const inactiveClass = "flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all";
+
+            if (pct === 1.5) {
+                btn15.className = activeClass;
+                btn25.className = inactiveClass;
+            } else {
+                btn15.className = inactiveClass;
+                btn25.className = activeClass;
+            }
+            
+            calculateCard();
+        }
+
+        function calculateCard() {
+            const amount = parseFloat(document.getElementById('card-amount').value) || 0;
+            const rateBCV = rates.dolar;
+
+            // Cálculo con comisión dinámica
+            const commUSD = amount * (currentCardCommission / 100);
+            const totalUSD = amount + commUSD;
+            
+            // Conversión a Bs (Solo la comisión)
+            const commBS = commUSD * rateBCV;
+
+            // Actualizar etiqueta de texto para que muestre 1.5% o 2.5%
+            document.getElementById('card-comm-label').innerText = `Comisión (${currentCardCommission}%):`;
+
+            // Renderizar valores
+            document.getElementById('card-comm-usd').innerText = '$' + commUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('card-total-usd').innerText = '$' + totalUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('card-comm-bs').innerText = formatNumber(commBS) + ' Bs';
+        }
+
+        // --- LOGICA DEL MODAL WALLETS ---
+        
+        let walletMethod = 'wally';
+        let walletCalcMode = 'receive'; 
+        let walletCardComm = 1.5; 
+
+        function openWalletModal() {
+            const modal = document.getElementById('wallet-modal');
+            const backdrop = document.getElementById('wallet-backdrop');
+            const content = document.getElementById('wallet-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                content.classList.remove('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+            }, 10);
+            
+            toggleSettings();
+            calculateWallet();
+        }
+
+        function closeWalletModal() {
+            const modal = document.getElementById('wallet-modal');
+            const backdrop = document.getElementById('wallet-backdrop');
+            const content = document.getElementById('wallet-content');
+
+            backdrop.classList.add('opacity-0');
+            content.classList.add('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function toggleWalletMode() {
+            walletCalcMode = (walletCalcMode === 'receive') ? 'spend' : 'receive';
+            
+            const labelMode = document.getElementById('wallet-mode-label');
+            const labelInput = document.getElementById('wallet-input-label');
+
+            if (walletCalcMode === 'receive') {
+                labelMode.innerText = "Modo: Quiero que lleguen";
+                labelInput.innerText = "Monto Exacto a Recibir ($)";
+            } else {
+                labelMode.innerText = "Modo: Tengo en la cuenta";
+                labelInput.innerText = "Presupuesto Máximo a Gastar ($)";
+            }
+            
+            document.getElementById('wallet-amount').value = '';
+            calculateWallet();
+        }
+
+        function setWalletMethod(method) {
+            walletMethod = method;
+            ['wally', 'zinli', 'mercantil'].forEach(m => {
+                const btn = document.getElementById(`btn-wallet-${m}`);
+                if (m === method) btn.className = "py-2 px-2 rounded-xl text-xs sm:text-[13px] font-bold border border-transparent transition-all bg-primary text-onPrimary shadow-md leading-tight";
+                else btn.className = "py-2 px-2 rounded-xl text-xs sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant leading-tight";
+            });
+            calculateWallet();
+        }
+
+        function setWalletCardComm(pct) {
+            walletCardComm = pct;
+            ['0', '15', '25'].forEach(id => {
+                const btn = document.getElementById(`btn-wallet-card-${id}`);
+                const val = id === '15' ? 1.5 : (id === '25' ? 2.5 : 0);
+                
+                if (pct === val) {
+                    btn.className = "flex-1 py-2 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all shadow-sm";
+                } else {
+                    btn.className = "flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all";
+                }
+            });
+            calculateWallet();
+        }
+
+        function calculateWallet() {
+            const amount = parseFloat(document.getElementById('wallet-amount').value) || 0;
+            const rateBCV = rates.dolar;
+            
+            const rateWally = 0.0299 * 1.07; 
+            const rateZinli = 0.0375;
+            const rateMercantil = 0.05 * 1.07; 
+
+            let targetAmount = 0, cardChargeAmount = 0, totalAmount = 0;
+            let walletComm = 0, cardComm = 0;
+
+            if (walletCalcMode === 'receive') {
+                targetAmount = amount;
+                
+                if (walletMethod === 'wally') cardChargeAmount = targetAmount * (1 + rateWally);
+                else if (walletMethod === 'zinli') cardChargeAmount = targetAmount * (1 + rateZinli);
+                else if (walletMethod === 'mercantil') cardChargeAmount = targetAmount / (1 - rateMercantil);
+
+                walletComm = cardChargeAmount - targetAmount;
+                cardComm = cardChargeAmount * (walletCardComm / 100);
+                totalAmount = cardChargeAmount + cardComm;
+
+            } else {
+                totalAmount = amount;
+                
+                cardChargeAmount = totalAmount / (1 + (walletCardComm / 100));
+                cardComm = totalAmount - cardChargeAmount;
+
+                if (walletMethod === 'wally') targetAmount = cardChargeAmount / (1 + rateWally);
+                else if (walletMethod === 'zinli') targetAmount = cardChargeAmount / (1 + rateZinli);
+                else if (walletMethod === 'mercantil') targetAmount = cardChargeAmount * (1 - rateMercantil);
+
+                walletComm = cardChargeAmount - targetAmount;
+            }
+
+            // Textos dinámicos
+            let labelCommWallet = "Comisión Wallet:";
+            if(walletMethod === 'wally') labelCommWallet = "Comisión (2.99%+ITBMS):";
+            else if(walletMethod === 'zinli') labelCommWallet = "Comisión (3.75%):";
+            else if(walletMethod === 'mercantil') labelCommWallet = "Comisión (5%+ITBMS):";
+            
+            document.getElementById('res-wall-comm-label').innerText = labelCommWallet;
+            document.getElementById('res-wall-card-label').innerText = `Comisión TDD Nac. (${walletCardComm}%):`;
+
+            const fmtUSD = (num) => '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
+            // Asignación Dinámica de las filas superior y principal según el modo
+            if (walletCalcMode === 'receive') {
+                document.getElementById('res-wall-row1-label').innerText = "Llega a la Wallet:";
+                document.getElementById('res-wall-row1').innerText = fmtUSD(targetAmount);
+                document.getElementById('res-wall-main-label').innerText = "Total a Pagar:";
+                document.getElementById('res-wall-main').innerText = fmtUSD(totalAmount);
+            } else {
+                document.getElementById('res-wall-row1-label').innerText = "Gasto Total:";
+                document.getElementById('res-wall-row1').innerText = fmtUSD(totalAmount);
+                document.getElementById('res-wall-main-label').innerText = "Podrás Recibir:";
+                document.getElementById('res-wall-main').innerText = fmtUSD(targetAmount);
+            }
+
+            // Asignación de Comisiones
+            document.getElementById('res-wall-comm').innerText = fmtUSD(walletComm);
+            document.getElementById('res-wall-card-comm').innerText = fmtUSD(cardComm);
+
+            // Calcular y mostrar Bolívares SÓLO en la comisión de la tarjeta nacional
+            const bsLabel = document.getElementById('res-wall-card-bs');
+            if (cardComm > 0 && rateBCV > 0) {
+                const cardCommBs = cardComm * rateBCV;
+                bsLabel.innerText = `(~ ${formatNumber(cardCommBs)} Bs)`;
+                bsLabel.classList.remove('hidden');
+            } else {
+                bsLabel.classList.add('hidden');
+            }
+        }
+
     </script>
 </body>
 
