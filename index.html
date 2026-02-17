@@ -206,6 +206,17 @@
                     </div>
                     <span class="text-sm font-medium text-onSurface">Recarga a Wallets</span>
                 </button>
+                <button onclick="openBinanceModal()"
+                    class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group mt-1">
+                    <div
+                        class="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                            <path
+                                d="M11.996 9.942L14.054 12l-2.058 2.058L9.938 12l2.058-2.058zM12 2.25L5.822 8.428l2.058 2.058L12 6.368l4.12 4.118 2.058-2.058L12 2.25zm0 19.5l6.178-6.178-2.058-2.058L12 17.632l-4.12-4.118-2.058 2.058L12 21.75zm-7.234-7.692L2.708 12l2.058-2.058 2.058 2.058-2.058 2.058zm14.468 0l2.058-2.058-2.058-2.058-2.058 2.058 2.058 2.058z" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-onSurface">Fondeo a Binance</span>
+                </button>
                 <button onclick="openGapModal()"
                     class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group mt-1">
                     <div
@@ -825,6 +836,256 @@
                 </div>
             </div>
             <div class="h-1"></div>
+        </div>
+    </div>
+
+    <div id="binance-modal" class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0" id="binance-backdrop"
+            onclick="closeBinanceModal()"></div>
+    
+        <div class="relative w-full sm:w-[480px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[90vh] transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
+            id="binance-content">
+    
+            <div class="flex justify-between items-start p-6 pb-2 shrink-0 border-b border-outline/10">
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7">
+                            <path
+                                d="M11.996 9.942L14.054 12l-2.058 2.058L9.938 12l2.058-2.058zM12 2.25L5.822 8.428l2.058 2.058L12 6.368l4.12 4.118 2.058-2.058L12 2.25zm0 19.5l6.178-6.178-2.058-2.058L12 17.632l-4.12-4.118-2.058 2.058L12 21.75zm-7.234-7.692L2.708 12l2.058-2.058 2.058 2.058-2.058 2.058zm14.468 0l2.058-2.058-2.058-2.058-2.058 2.058 2.058 2.058z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-onSurface leading-tight">Fondeo a Binance</h2>
+                        <p class="text-xs text-outline">Comparativa y Arbitraje</p>
+                    </div>
+                </div>
+                <button onclick="closeBinanceModal()"
+                    class="p-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+    
+            <div class="flex flex-col gap-6 overflow-y-auto p-6 pt-4">
+            
+                <div>
+                    <label class="text-xs font-bold text-primary ml-1 block mb-1.5">Saldo a transferir a Binance ($)</label>
+                    <div class="relative bg-surfaceVariant/30 rounded-xl border border-outline/10">
+                        <input type="number" id="bin-amount" placeholder="100.00"
+                            class="material-input block px-4 py-3 w-full bg-transparent border-0 focus:ring-0 text-onSurface font-mono text-xl"
+                            oninput="calculateBinance()">
+                        <span class="absolute right-4 top-3.5 text-xs font-bold text-outline">USD</span>
+                    </div>
+                </div>
+            
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div
+                        class="p-4 bg-surfaceVariant/20 rounded-xl border border-outline/10 focus-within:border-primary/50 transition-colors">
+                        <span class="text-[11px] uppercase font-bold text-onSurface opacity-80 mb-3 block tracking-wider">Vía P2P
+                            (Anuncios)</span>
+                        <label class="text-xs text-outline block mb-1.5">Precio en el anuncio</label>
+                        <div class="relative">
+                            <input type="number" id="bin-p2p-rate" placeholder="1.086"
+                                class="w-full bg-surfaceVariant/50 border-0 rounded-lg px-3 py-2 text-onSurface font-mono text-sm focus:ring-1 focus:ring-primary/50"
+                                oninput="calculateBinance()">
+                        </div>
+                        <p class="text-[10px] text-outline mt-2 leading-tight">* Se deduce 0.08 USDT de comisión Binance</p>
+                    </div>
+            
+                    <div
+                        class="p-4 bg-surfaceVariant/20 rounded-xl border border-outline/10 focus-within:border-primary/50 transition-colors">
+                        <span class="text-[11px] uppercase font-bold text-onSurface opacity-80 mb-3 block tracking-wider">Vía TDD
+                            (Directo)</span>
+                        <label class="text-xs text-outline block mb-1.5">Recibes Exacto (USDT)</label>
+                        <div class="relative">
+                            <input type="number" id="bin-card-received" placeholder="93.53"
+                                class="w-full bg-surfaceVariant/50 border-0 rounded-lg px-3 py-2 text-onSurface font-mono text-sm focus:ring-1 focus:ring-primary/50"
+                                oninput="calculateBinance()">
+                        </div>
+                        <p class="text-[10px] text-outline mt-2 leading-tight">* Comisión variable de la pasarela</p>
+                    </div>
+                </div>
+            
+                <div class="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden shrink-0"
+                    style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
+            
+                    <div
+                        class="flex items-center justify-between text-sm bg-surface/80 border border-primary/20 rounded-xl px-4 py-5 mb-1 shadow-sm shrink-0">
+                        <span class="font-bold text-primary whitespace-nowrap">Mejor Opción:</span>
+                        <span class="font-bold uppercase tracking-wide text-right" id="bin-best-method">-</span>
+                    </div>
+            
+                    <div class="flex justify-between items-center text-xs px-1 mt-1 shrink-0">
+                        <span class="text-onSurface font-medium opacity-80">Ruta P2P da:</span>
+                        <div class="text-right flex flex-col items-end gap-1">
+                            <span class="font-mono font-bold text-sm text-onSurface leading-none" id="bin-res-p2p-usdt">0.00
+                                USDT</span>
+                            <span class="text-[10px] text-error font-medium leading-none" id="bin-res-p2p-loss">Pierdes: $0.00
+                                (0%)</span>
+                        </div>
+                    </div>
+            
+                    <div class="flex justify-between items-center text-xs px-1 mt-2 border-t border-primary/10 pt-3 shrink-0">
+                        <span class="text-onSurface font-medium opacity-80">Ruta Tarjeta da:</span>
+                        <div class="text-right flex flex-col items-end gap-1">
+                            <span class="font-mono font-bold text-sm text-onSurface leading-none" id="bin-res-card-usdt">0.00
+                                USDT</span>
+                            <span class="text-[10px] text-error font-medium leading-none" id="bin-res-card-loss">Tasa Implícita:
+                                0.00</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="pt-4 border-t border-outline/10 mt-1">
+                    <label class="flex items-center gap-3 cursor-pointer select-none mb-4">
+                        <div class="relative flex items-center">
+                            <input type="checkbox" id="bin-adv-check"
+                                class="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-outline transition-all checked:border-primary checked:bg-primary"
+                                onchange="toggleBinAdv()">
+                            <svg class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="4" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <span class="text-sm text-onSurface font-bold tracking-wide">Análisis de Ruta (Arbitraje)</span>
+                    </label>
+            
+                    <div id="bin-adv-box" class="hidden flex-col gap-5">
+                        <p class="text-xs text-outline leading-relaxed px-1">Introduce el dinero que gastaste al inicio para saber
+                            si la ruta fue rentable comparado con comprar directo.</p>
+            
+                        <div class="flex bg-surfaceVariant/40 rounded-xl p-1.5 shadow-inner">
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="bin-inv-mode" value="bs" checked class="peer hidden"
+                                    onchange="calculateBinance()">
+                                <div
+                                    class="py-2.5 text-xs font-bold rounded-lg peer-checked:bg-surface peer-checked:text-primary peer-checked:shadow transition-all text-onSurface/70">
+                                    Pagué en Bolívares</div>
+                            </label>
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="bin-inv-mode" value="divisa" class="peer hidden"
+                                    onchange="calculateBinance()">
+                                <div
+                                    class="py-2.5 text-xs font-bold rounded-lg peer-checked:bg-surface peer-checked:text-primary peer-checked:shadow transition-all text-onSurface/70">
+                                    Compré Divisas</div>
+                            </label>
+                        </div>
+            
+                        <div id="bin-adv-mode-bs" class="mt-1">
+                            <label class="text-xs font-bold text-primary ml-1 block mb-2">Inversión Inicial Total (Bs.)</label>
+                            <input type="number" id="bin-adv-invest" placeholder="43000"
+                                class="material-input block px-4 py-3.5 w-full bg-surfaceVariant/30 border border-outline/10 rounded-xl focus:ring-0 text-onSurface font-mono text-lg"
+                                oninput="calculateBinance()">
+                        </div>
+            
+                        <div id="bin-adv-mode-div" class="hidden flex-col gap-4 mt-1">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-bold text-primary ml-1 block mb-2">Monto ($/€)</label>
+                                    <input type="number" id="bin-adv-div-amount" placeholder="100"
+                                        class="material-input block px-4 py-3 w-full bg-surfaceVariant/30 border border-outline/10 rounded-xl focus:ring-0 text-onSurface font-mono"
+                                        oninput="calculateBinance()">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-primary ml-1 block mb-2">Tasa Usada</label>
+                                    <select id="bin-adv-div-rate-type"
+                                        class="block px-3 py-3 w-full bg-surfaceVariant/30 border border-outline/10 rounded-xl focus:ring-0 text-onSurface text-sm cursor-pointer"
+                                        onchange="calculateBinance()">
+                                        <option value="dolar">Dólar BCV</option>
+                                        <option value="euro">Euro BCV</option>
+                                        <option value="custom">Personalizada</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="bin-adv-div-custom-box" class="hidden">
+                                <label class="text-xs font-bold text-primary ml-1 block mb-2">Tasa Personalizada (Bs)</label>
+                                <input type="number" id="bin-adv-div-custom-rate" placeholder="0.00"
+                                    class="material-input block px-4 py-3 w-full bg-surfaceVariant/30 border border-outline/10 rounded-xl focus:ring-0 text-onSurface font-mono"
+                                    oninput="calculateBinance()">
+                            </div>
+                            <div
+                                class="flex justify-between items-center bg-primary/5 border border-primary/20 rounded-xl px-5 py-3 mt-1 shadow-sm">
+                                <span class="text-xs text-onSurface opacity-80">Equivale a:</span>
+                                <span id="bin-adv-equiv-bs" class="font-mono font-bold text-primary text-sm">0.00 Bs</span>
+                            </div>
+                        </div>
+            
+                        <div class="p-5 bg-surfaceVariant/20 rounded-2xl border border-outline/10 flex flex-col gap-5 mt-2">
+            
+                            <div class="flex justify-between items-center text-sm border-b border-outline/10 pb-4">
+                                <span class="text-onSurface opacity-80 font-medium">Tasa Efectiva Lograda:</span>
+                                <span class="font-mono font-bold text-base text-onSurface" id="bin-adv-eff-rate">0.00 Bs/USDT</span>
+                            </div>
+            
+                            <div class="flex flex-col gap-3">
+                                <div class="flex justify-between items-center text-xs px-1">
+                                    <span class="text-onSurface opacity-80">Si comprabas P2P directo hoy:</span>
+                                    <span class="font-mono text-onSurface font-medium" id="bin-adv-direct-usdt">0.00 USDT</span>
+                                </div>
+                                <div
+                                    class="flex justify-between items-center text-sm font-bold bg-surface/60 p-3.5 rounded-xl border border-outline/5 mt-1 shadow-sm">
+                                    <span>Resultado de la ruta:</span>
+                                    <span class="font-mono text-base" id="bin-adv-diff-usdt">0.00 USDT</span>
+                                </div>
+                            </div>
+            
+                            <div class="pt-4 border-t border-outline/10 flex flex-col gap-4">
+                                <span class="text-[11px] uppercase font-bold text-outline tracking-widest block mb-1">Tu saldo si vendes hoy los
+                                    USDT:</span>
+                            
+                                <div class="flex justify-between items-center text-sm px-1">
+                                    <span class="opacity-80 font-medium">A Tasa BCV:</span>
+                                    <div class="text-right flex flex-col items-end gap-1.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="empty:hidden" id="bin-adv-profit-bcv"></span>
+                                            <span class="font-mono text-onSurface font-medium text-base" id="bin-adv-sell-bcv">0.00 Bs</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 opacity-80">
+                                            <span class="empty:hidden" id="bin-adv-profit-bcv-usd"></span>
+                                            <span class="font-mono text-xs text-onSurface" id="bin-adv-sell-bcv-usd">≈ 0.00 USD</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="flex justify-between items-center text-sm px-1">
+                                    <span class="opacity-80 font-medium">A Tasa Promedio:</span>
+                                    <div class="text-right flex flex-col items-end gap-1.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="empty:hidden" id="bin-adv-profit-prom"></span>
+                                            <span class="font-mono text-onSurface font-medium text-base" id="bin-adv-sell-prom">0.00 Bs</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 opacity-80">
+                                            <span class="empty:hidden" id="bin-adv-profit-prom-usd"></span>
+                                            <span class="font-mono text-xs text-onSurface" id="bin-adv-sell-prom-usd">≈ 0.00 USD</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="flex justify-between items-center text-sm bg-primary/10 p-3.5 rounded-xl border border-primary/20 mt-1">
+                                    <span class="font-bold text-primary">A Tasa Binance:</span>
+                                    <div class="text-right flex flex-col items-end gap-1.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="empty:hidden" id="bin-adv-profit-bin"></span>
+                                            <span class="font-mono font-bold text-primary text-[1.1rem]" id="bin-adv-sell-bin">0.00 Bs</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 opacity-90">
+                                            <span class="empty:hidden" id="bin-adv-profit-bin-usd"></span>
+                                            <span class="font-mono text-xs text-primary font-bold" id="bin-adv-sell-bin-usd">≈ 0.00 USD</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            <div class="h-1 shrink-0"></div>
         </div>
     </div>
 
@@ -1686,6 +1947,213 @@
                 bsLabel.classList.remove('hidden');
             } else {
                 bsLabel.classList.add('hidden');
+            }
+        }
+
+        // --- LOGICA DEL MODAL BINANCE FONDEO ---
+        const BINANCE_P2P_FEE = 0.08;
+
+        function openBinanceModal() {
+            const modal = document.getElementById('binance-modal');
+            const backdrop = document.getElementById('binance-backdrop');
+            const content = document.getElementById('binance-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                content.classList.remove('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+            }, 10);
+            
+            toggleSettings();
+            calculateBinance();
+        }
+
+        function closeBinanceModal() {
+            const modal = document.getElementById('binance-modal');
+            const backdrop = document.getElementById('binance-backdrop');
+            const content = document.getElementById('binance-content');
+
+            backdrop.classList.add('opacity-0');
+            content.classList.add('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function toggleBinAdv() {
+            const check = document.getElementById('bin-adv-check');
+            const box = document.getElementById('bin-adv-box');
+            if(check.checked) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+            calculateBinance();
+        }
+
+        function calculateBinance() {
+            const amount = parseFloat(document.getElementById('bin-amount').value) || 0;
+            const p2pRate = parseFloat(document.getElementById('bin-p2p-rate').value) || 0;
+            const cardRec = parseFloat(document.getElementById('bin-card-received').value) || 0;
+            
+            let p2pUsdt = 0, p2pLoss = 0, p2pLossPct = 0;
+            let cardUsdt = 0, cardLoss = 0, cardLossPct = 0, cardImpliedRate = 0;
+
+            if (amount > 0) {
+                if (p2pRate > 0) {
+                    p2pUsdt = (amount / p2pRate) - BINANCE_P2P_FEE;
+                    p2pLoss = amount - p2pUsdt;
+                    p2pLossPct = (p2pLoss / amount) * 100;
+                }
+                if (cardRec > 0) {
+                    cardUsdt = cardRec;
+                    cardLoss = amount - cardUsdt;
+                    cardLossPct = (cardLoss / amount) * 100;
+                    cardImpliedRate = amount / cardUsdt;
+                }
+            }
+
+            const fmt = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const fmt4 = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+
+            document.getElementById('bin-res-p2p-usdt').innerText = fmt4(p2pUsdt) + ' USDT';
+            document.getElementById('bin-res-card-usdt').innerText = fmt4(cardUsdt) + ' USDT';
+            
+            document.getElementById('bin-res-p2p-loss').innerText = `Pérdida: -$${fmt(p2pLoss)} (${fmt(p2pLossPct)}%)`;
+            document.getElementById('bin-res-card-loss').innerText = `Pérdida: -$${fmt(cardLoss)} (Tasa: ${fmt4(cardImpliedRate)})`;
+
+            const bestBadge = document.getElementById('bin-best-method');
+            let bestUsdt = 0;
+            
+            if (p2pUsdt === 0 && cardUsdt === 0) {
+                bestBadge.innerText = "Ingresa datos";
+                bestBadge.className = "font-bold text-outline uppercase tracking-wide text-right";
+            } else if (p2pUsdt > cardUsdt) {
+                bestBadge.innerText = "Vía P2P";
+                bestBadge.className = "font-bold text-primary uppercase tracking-wide text-right";
+                bestUsdt = p2pUsdt;
+            } else {
+                bestBadge.innerText = "Vía Tarjeta";
+                bestBadge.className = "font-bold text-primary uppercase tracking-wide text-right";
+                bestUsdt = cardUsdt;
+            }
+
+            // --- SECCIÓN AVANZADA (Arbitraje) ---
+            if (document.getElementById('bin-adv-check').checked) {
+                
+                const advMode = document.querySelector('input[name="bin-inv-mode"]:checked').value;
+                const modeBsBox = document.getElementById('bin-adv-mode-bs');
+                const modeDivBox = document.getElementById('bin-adv-mode-div');
+                const customRateBox = document.getElementById('bin-adv-div-custom-box');
+                
+                let investBs = 0;
+
+                if (advMode === 'bs') {
+                    modeBsBox.classList.remove('hidden');
+                    modeDivBox.classList.add('hidden');
+                    modeDivBox.classList.remove('flex');
+                    investBs = parseFloat(document.getElementById('bin-adv-invest').value) || 0;
+                } else {
+                    modeBsBox.classList.add('hidden');
+                    modeDivBox.classList.remove('hidden');
+                    modeDivBox.classList.add('flex');
+                    
+                    const divAmount = parseFloat(document.getElementById('bin-adv-div-amount').value) || 0;
+                    const rateType = document.getElementById('bin-adv-div-rate-type').value;
+                    let rateToUse = 0;
+                    
+                    if (rateType === 'custom') {
+                        customRateBox.classList.remove('hidden');
+                        rateToUse = parseFloat(document.getElementById('bin-adv-div-custom-rate').value) || 0;
+                    } else {
+                        customRateBox.classList.add('hidden');
+                        rateToUse = (rateType === 'dolar') ? rates.dolar : rates.euro;
+                    }
+                    
+                    investBs = divAmount * rateToUse;
+                    document.getElementById('bin-adv-equiv-bs').innerText = formatNumber(investBs) + ' Bs';
+                }
+                
+                if (investBs > 0 && bestUsdt > 0 && rates.usdt > 0) {
+                    const effRate = investBs / bestUsdt;
+                    document.getElementById('bin-adv-eff-rate').innerText = formatNumber(effRate) + ' Bs/USDT';
+                    
+                    const directUsdt = investBs / rates.usdt;
+                    document.getElementById('bin-adv-direct-usdt').innerText = fmt4(directUsdt) + ' USDT';
+                    
+                    const diffUsdt = bestUsdt - directUsdt;
+                    const diffSpan = document.getElementById('bin-adv-diff-usdt');
+                    if (diffUsdt >= 0) {
+                        diffSpan.innerText = `+${fmt4(diffUsdt)} USDT (Ganadora)`;
+                        diffSpan.className = "font-mono text-lg font-bold text-[#4CAF50]"; 
+                    } else {
+                        diffSpan.innerText = `${fmt4(diffUsdt)} USDT (Perdedora)`;
+                        diffSpan.className = "font-mono text-lg font-bold text-error"; 
+                    }
+
+                    // Venta en Bs
+                    const sellBCV = bestUsdt * rates.dolar;
+                    const rateProm = (rates.dolar + rates.usdt) / 2;
+                    const sellProm = bestUsdt * rateProm;
+                    const sellBin = bestUsdt * rates.usdt;
+
+                    document.getElementById('bin-adv-sell-bcv').innerText = formatNumber(sellBCV) + ' Bs';
+                    document.getElementById('bin-adv-sell-prom').innerText = formatNumber(sellProm) + ' Bs';
+                    document.getElementById('bin-adv-sell-bin').innerText = formatNumber(sellBin) + ' Bs';
+
+                    // Venta equivalente en USD (Siempre medido con la vara oficial BCV)
+                    const equivUsdBCV = sellBCV / rates.dolar;
+                    const equivUsdProm = sellProm / rates.dolar;
+                    const equivUsdBin = sellBin / rates.dolar;
+
+                    document.getElementById('bin-adv-sell-bcv-usd').innerText = `≈ ${fmt(equivUsdBCV)} USD (BCV)`;
+                    document.getElementById('bin-adv-sell-prom-usd').innerText = `≈ ${fmt(equivUsdProm)} USD (BCV)`;
+                    document.getElementById('bin-adv-sell-bin-usd').innerText = `≈ ${fmt(equivUsdBin)} USD (BCV)`;
+
+                    // Renderizar Profit en Bs y USD (Etiquetas/Badges)
+                    const renderProfit = (idBs, idUsd, sellValueBs, equivValueUsd) => {
+                        const spanBs = document.getElementById(idBs);
+                        const spanUsd = document.getElementById(idUsd);
+                        
+                        const profitBs = sellValueBs - investBs;
+                        const investUsdAtBcv = investBs / rates.dolar; 
+                        const profitUsd = equivValueUsd - investUsdAtBcv;
+
+                        // Estilos de Etiquetas (Badges)
+                        const badgePos = "text-[10px] sm:text-[11px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-2 py-0.5 rounded-md shadow-sm";
+                        // Gris claro de fondo (surfaceVariant) con texto rojo/error para el contraste de pérdidas
+                        const badgeNeg = "text-[10px] sm:text-[11px] font-bold text-error bg-surfaceVariant px-2 py-0.5 rounded-md shadow-sm"; 
+
+                        if (profitBs >= 0) {
+                            spanBs.innerText = `+${formatNumber(profitBs)} Bs`;
+                            spanBs.className = badgePos;
+                        } else {
+                            spanBs.innerText = `${formatNumber(profitBs)} Bs`;
+                            spanBs.className = badgeNeg;
+                        }
+
+                        if (profitUsd >= 0) {
+                            spanUsd.innerText = `+$${fmt(profitUsd)}`;
+                            spanUsd.className = badgePos;
+                        } else {
+                            spanUsd.innerText = `-$${fmt(Math.abs(profitUsd))}`;
+                            spanUsd.className = badgeNeg;
+                        }
+                    };
+
+                    renderProfit('bin-adv-profit-bcv', 'bin-adv-profit-bcv-usd', sellBCV, equivUsdBCV);
+                    renderProfit('bin-adv-profit-prom', 'bin-adv-profit-prom-usd', sellProm, equivUsdProm);
+                    renderProfit('bin-adv-profit-bin', 'bin-adv-profit-bin-usd', sellBin, equivUsdBin);
+                } else {
+                    // Limpiar
+                    ['bin-adv-eff-rate', 'bin-adv-direct-usdt', 'bin-adv-diff-usdt'].forEach(id => document.getElementById(id).innerText = '-');
+                    ['bin-adv-sell-bcv', 'bin-adv-sell-prom', 'bin-adv-sell-bin'].forEach(id => document.getElementById(id).innerText = '0.00 Bs');
+                    ['bin-adv-profit-bcv', 'bin-adv-profit-prom', 'bin-adv-profit-bin'].forEach(id => {
+                        document.getElementById(id).innerText = '';
+                        document.getElementById(id).className = 'empty:hidden';
+                    });
+                    ['bin-adv-sell-bcv-usd', 'bin-adv-sell-prom-usd', 'bin-adv-sell-bin-usd'].forEach(id => document.getElementById(id).innerText = '≈ 0.00 USD');
+                    ['bin-adv-profit-bcv-usd', 'bin-adv-profit-prom-usd', 'bin-adv-profit-bin-usd'].forEach(id => {
+                        document.getElementById(id).innerText = '';
+                        document.getElementById(id).className = 'empty:hidden';
+                    });
+                }
             }
         }
 
