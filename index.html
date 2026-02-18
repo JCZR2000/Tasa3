@@ -1031,6 +1031,15 @@
                                     <span>Resultado de la ruta:</span>
                                     <span class="font-mono text-base" id="bin-adv-diff-usdt">0.00 USDT</span>
                                 </div>
+
+                                <div class="flex justify-between items-center text-xs px-1 mt-1 border-t border-outline/10 pt-3">
+                                    <span class="text-onSurface opacity-80 font-medium">Pérdida total en comisiones:</span>
+                                    <div class="text-right flex items-center gap-1.5">
+                                        <span class="font-mono text-error font-bold text-sm" id="bin-adv-route-loss">-$0.00</span>
+                                        <span class="empty:hidden text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+                                            id="bin-adv-route-loss-pct">0.00%</span>
+                                    </div>
+                                </div>
                             </div>
             
                             <div class="pt-4 border-t border-outline/10 flex flex-col gap-4">
@@ -2043,12 +2052,14 @@
                 const customRateBox = document.getElementById('bin-adv-div-custom-box');
                 
                 let investBs = 0;
+                let initialUsd = 0; // NUEVO: Para saber con cuántos dólares empezó la persona
 
                 if (advMode === 'bs') {
                     modeBsBox.classList.remove('hidden');
                     modeDivBox.classList.add('hidden');
                     modeDivBox.classList.remove('flex');
                     investBs = parseFloat(document.getElementById('bin-adv-invest').value) || 0;
+                    initialUsd = investBs / rates.dolar; // Su capital inicial en USD (Medido a tasa oficial)
                 } else {
                     modeBsBox.classList.add('hidden');
                     modeDivBox.classList.remove('hidden');
@@ -2067,6 +2078,7 @@
                     }
                     
                     investBs = divAmount * rateToUse;
+                    initialUsd = divAmount; // Su capital inicial en USD fue exactamente lo que ingresó
                     document.getElementById('bin-adv-equiv-bs').innerText = formatNumber(investBs) + ' Bs';
                 }
                 
@@ -2087,6 +2099,26 @@
                         diffSpan.className = "font-mono text-lg font-bold text-error"; 
                     }
 
+                    // NUEVO: Cálculo de pérdida total en comisiones en la ruta
+                    const routeLossUsd = initialUsd - bestUsdt;
+                    const routeLossPct = initialUsd > 0 ? (routeLossUsd / initialUsd) * 100 : 0;
+
+                    const lossSpan = document.getElementById('bin-adv-route-loss');
+                    const lossPctSpan = document.getElementById('bin-adv-route-loss-pct');
+                    
+                    if (routeLossUsd > 0) {
+                        lossSpan.innerText = `-$${fmt(routeLossUsd)}`;
+                        lossPctSpan.innerText = `-${fmt(routeLossPct)}%`;
+                        lossSpan.className = "font-mono text-error font-bold text-sm";
+                        lossPctSpan.className = "text-[10px] text-error font-bold bg-error/10 px-1.5 py-0.5 rounded-md";
+                    } else {
+                        // Por si acaso hay una ganancia (ruta negativa en comisiones)
+                        lossSpan.innerText = `+$${fmt(Math.abs(routeLossUsd))}`;
+                        lossPctSpan.innerText = `+${fmt(Math.abs(routeLossPct))}%`;
+                        lossSpan.className = "font-mono text-[#4CAF50] font-bold text-sm";
+                        lossPctSpan.className = "text-[10px] text-[#4CAF50] font-bold bg-[#4CAF50]/10 px-1.5 py-0.5 rounded-md";
+                    }
+
                     // Venta en Bs
                     const sellBCV = bestUsdt * rates.dolar;
                     const rateProm = (rates.dolar + rates.usdt) / 2;
@@ -2097,7 +2129,7 @@
                     document.getElementById('bin-adv-sell-prom').innerText = formatNumber(sellProm) + ' Bs';
                     document.getElementById('bin-adv-sell-bin').innerText = formatNumber(sellBin) + ' Bs';
 
-                    // Venta equivalente en USD (Siempre medido con la vara oficial BCV)
+                    // Venta equivalente en USD
                     const equivUsdBCV = sellBCV / rates.dolar;
                     const equivUsdProm = sellProm / rates.dolar;
                     const equivUsdBin = sellBin / rates.dolar;
@@ -2115,9 +2147,7 @@
                         const investUsdAtBcv = investBs / rates.dolar; 
                         const profitUsd = equivValueUsd - investUsdAtBcv;
 
-                        // Estilos de Etiquetas (Badges)
                         const badgePos = "text-[10px] sm:text-[11px] font-bold text-[#4CAF50] bg-[#4CAF50]/10 px-2 py-0.5 rounded-md shadow-sm";
-                        // Gris claro de fondo (surfaceVariant) con texto rojo/error para el contraste de pérdidas
                         const badgeNeg = "text-[10px] sm:text-[11px] font-bold text-error bg-surfaceVariant px-2 py-0.5 rounded-md shadow-sm"; 
 
                         if (profitBs >= 0) {
@@ -2143,6 +2173,8 @@
                 } else {
                     // Limpiar
                     ['bin-adv-eff-rate', 'bin-adv-direct-usdt', 'bin-adv-diff-usdt'].forEach(id => document.getElementById(id).innerText = '-');
+                    document.getElementById('bin-adv-route-loss').innerText = '-';
+                    document.getElementById('bin-adv-route-loss-pct').className = 'empty:hidden';
                     ['bin-adv-sell-bcv', 'bin-adv-sell-prom', 'bin-adv-sell-bin'].forEach(id => document.getElementById(id).innerText = '0.00 Bs');
                     ['bin-adv-profit-bcv', 'bin-adv-profit-prom', 'bin-adv-profit-bin'].forEach(id => {
                         document.getElementById(id).innerText = '';
