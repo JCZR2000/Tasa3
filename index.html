@@ -346,8 +346,8 @@
                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <p class="text-xs text-onSurface opacity-70">
-                    Los precios se actualizan automáticamente desde la API de Tasa3. Última sincronización: <span
-                        id="quote-time" class="font-bold">--:--</span>.
+                    Los precios se actualizan automáticamente desde la API de ComercioPrecioAPI. Última sincronización: <span
+                        id="quote-time" class="font-bold">--:--</span>
                 </p>
             </div>
         </div>
@@ -562,8 +562,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="text-sm font-bold text-onSurface block">Brecha y Promedio</span>
-                        <span class="text-xs text-outline font-medium">Análisis de spread cambiario</span>
+                        <span class="text-sm font-bold text-onSurface block">Brecha cambiaria y Promedios</span>
+                        <span class="text-xs text-outline font-medium">Análisis de la brecha cambiaria y sus promedios</span>
                     </div>
                 </button>
             </div>
@@ -582,8 +582,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="text-sm font-bold text-onSurface block">Compra en Banco</span>
-                        <span class="text-xs text-outline font-medium">Intervención, Menudeo y Mesa</span>
+                        <span class="text-sm font-bold text-onSurface block">Compra de divisas en Bancos</span>
+                        <span class="text-xs text-outline font-medium">Calcula la compra en Intervención digital y Menudeo</span>
                     </div>
                 </button>
         
@@ -598,8 +598,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="text-sm font-bold text-onSurface block">Comisión Tarjeta</span>
-                        <span class="text-xs text-outline font-medium">Pagos Internacionales</span>
+                        <span class="text-sm font-bold text-onSurface block">Comisión de Tarjeta Internacional</span>
+                        <span class="text-xs text-outline font-medium">Calcula tus Pagos Internacionales</span>
                     </div>
                 </button>
             </div>
@@ -1060,14 +1060,13 @@
     </div>
 
     <div id="card-modal" class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-    
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0" id="card-backdrop"
             onclick="closeCardModal()"></div>
     
-        <div class="relative w-full sm:w-[400px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
+        <div class="relative w-full sm:w-[480px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[90vh] transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
             id="card-content">
     
-            <div class="flex justify-between items-center p-6 pb-2">
+            <div class="flex justify-between items-center p-6 pb-2 border-b border-outline/5 shrink-0">
                 <div class="flex items-center gap-4">
                     <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -1082,7 +1081,7 @@
                     </div>
                 </div>
                 <button onclick="closeCardModal()"
-                    class="p-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors">
+                    class="p-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1090,10 +1089,27 @@
                 </button>
             </div>
     
-            <div class="p-6 flex flex-col gap-5">
+            <div class="flex flex-col gap-5 overflow-y-auto p-6 pt-4">
     
-                <div>
-                    <label class="text-xs font-bold text-primary ml-1">Monto a Pagar ($)</label>
+                <!-- Toggle Switch Modos -->
+                <div class="flex bg-surfaceVariant/40 rounded-xl p-1.5 shadow-inner mb-1 shrink-0">
+                    <label class="flex-1 text-center cursor-pointer">
+                        <input type="radio" name="card-mode" value="spend" checked class="peer hidden"
+                            onchange="switchCardMode()">
+                        <div
+                            class="py-2.5 text-xs font-bold rounded-lg peer-checked:bg-surface peer-checked:text-primary peer-checked:shadow transition-all text-onSurface/70">
+                            Quiero Gastar</div>
+                    </label>
+                    <label class="flex-1 text-center cursor-pointer">
+                        <input type="radio" name="card-mode" value="have" class="peer hidden" onchange="switchCardMode()">
+                        <div
+                            class="py-2.5 text-xs font-bold rounded-lg peer-checked:bg-surface peer-checked:text-primary peer-checked:shadow transition-all text-onSurface/70">
+                            Tengo en la cuenta</div>
+                    </label>
+                </div>
+    
+                <div class="shrink-0">
+                    <label class="text-[11px] font-bold text-primary ml-1" id="card-input-label">Monto a Pagar ($)</label>
                     <div
                         class="relative mt-1 bg-surfaceVariant/30 rounded-xl border border-outline/10 transition-all focus-within:border-primary/50 focus-within:bg-surfaceVariant/50">
                         <input type="number" id="card-amount" placeholder="0"
@@ -1104,21 +1120,58 @@
                     </div>
                 </div>
     
-                <div>
-                    <label class="text-xs font-bold text-primary ml-1">Porcentaje de Comisión</label>
-                    <div class="flex gap-2 mt-1">
+                <div class="shrink-0">
+                    <label class="text-[11px] font-bold text-primary ml-1">Porcentaje de Comisión del Banco</label>
+                    <div class="flex gap-2 mt-1 w-full">
                         <button onclick="setCardCommission(1.5)" id="btn-card-15"
-                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all">1.5%</button>
+                            class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all shadow-md">1.5%</button>
                         <button onclick="setCardCommission(2.5)" id="btn-card-25"
-                            class="flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all">2.5%</button>
+                            class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-outline/20 text-onSurface hover:bg-surfaceVariant transition-all bg-transparent">2.5%</button>
+                        <button onclick="setCardCommission(5.0)" id="btn-card-50"
+                            class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-outline/20 text-onSurface hover:bg-surfaceVariant transition-all bg-transparent">5%</button>
                     </div>
                 </div>
     
-                <div class="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden"
-                    style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
+                <div id="card-bs-container" class="pt-2 border-t border-outline/10 shrink-0 transition-all duration-300">
+                    <label class="flex items-center gap-2 cursor-pointer select-none mb-3">
+                        <div class="relative flex items-center">
+                            <input type="checkbox" id="card-bs-check" class="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-outline transition-all checked:border-primary checked:bg-primary" onchange="toggleCardBsOptions()">
+                            <svg class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <span class="text-sm text-onSurface font-medium">El banco cobra la comisión en Bolívares</span>
+                    </label>
+
+                    <!-- Opciones de Tasa -->
+                    <div id="card-bs-options" class="hidden flex-col gap-3 transition-all duration-300 w-full mt-2">
+                        <label class="text-[10px] uppercase font-bold text-outline tracking-wider">Tasa a calcular</label>
+                        <div class="flex gap-2 w-full">
+                            <label class="flex items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-2 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
+                                <input type="radio" name="cardBsRate" value="dolar" checked onchange="handleCardRateChange()" class="accent-primary w-4 h-4 shrink-0">
+                                <span class="text-[11px] sm:text-xs font-bold text-onSurface whitespace-nowrap">Dólar BCV</span>
+                            </label>
+                            <label class="flex items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-2 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
+                                <input type="radio" name="cardBsRate" value="euro" onchange="handleCardRateChange()" class="accent-primary w-4 h-4 shrink-0">
+                                <span class="text-[11px] sm:text-xs font-bold text-onSurface whitespace-nowrap">Euro BCV</span>
+                            </label>
+                            <label class="flex items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-2 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
+                                <input type="radio" name="cardBsRate" value="custom" onchange="handleCardRateChange()" class="accent-primary w-4 h-4 shrink-0">
+                                <span class="text-[11px] sm:text-xs font-bold text-onSurface whitespace-nowrap">Pers.</span>
+                            </label>
+                        </div>
+                        
+                        <div id="card-bs-custom-box" class="hidden mt-1">
+                            <input type="number" id="card-bs-custom-rate" placeholder="Escribe la tasa (Bs)" class="w-full bg-surface border border-outline/10 shadow-inner rounded-xl px-4 py-3 text-onSurface font-mono text-sm focus:ring-1 focus:ring-primary outline-none font-bold transition-all" oninput="calculateCard()">
+                        </div>
+                    </div>
+                </div>
     
-                    <div
-                        class="absolute -left-6 -bottom-6 w-24 h-24 bg-primary/10 rounded-full blur-xl pointer-events-none">
+                <!-- Contenedor de Resultados -->
+                <div class="mt-auto p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden shrink-0" style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
+                    <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-primary/10 rounded-full blur-xl pointer-events-none"></div>
+    
+                    <div class="flex justify-between text-sm relative z-10">
+                        <span class="text-onSurface opacity-70" id="card-base-label">Operación Base:</span>
+                        <span class="font-mono text-onSurface font-bold" id="card-base-usd">$0.00</span>
                     </div>
     
                     <div class="flex justify-between text-sm relative z-10">
@@ -1126,28 +1179,28 @@
                         <span class="font-mono text-error font-bold" id="card-comm-usd">$0.00</span>
                     </div>
     
-                    <div class="flex justify-between items-end relative z-10 pb-3 border-b border-primary/20">
-                        <span class="text-sm font-bold text-primary">Total en Cuenta:</span>
+                    <div class="flex justify-between items-end relative z-10" id="card-main-box">
+                        <span class="text-sm font-bold text-primary" id="card-main-label">Total a Debitar:</span>
                         <div class="text-right">
-                            <span class="block text-xl font-bold text-primary font-mono leading-none"
-                                id="card-total-usd">$0.00</span>
-                            <span class="text-[10px] text-primary font-bold opacity-80">Necesario en USD</span>
+                            <span class="block text-2xl font-bold text-primary font-mono leading-none" id="card-main-usd">$0.00</span>
+                            <span class="text-[10px] text-primary font-bold opacity-80" id="card-main-symbol">Necesario en USD</span>
                         </div>
                     </div>
     
-                    <div class="pt-1 relative z-10">
-                        <span class="text-xs text-onSurface opacity-70 block mb-1">Si cobran comisión en Bolívares:</span>
-                        <div
-                            class="flex justify-between items-center bg-surface/50 p-2 rounded-lg border border-primary/10">
-                            <span class="text-xs font-bold text-primary">Monto a Debitar:</span>
-                            <span class="font-mono text-onSurface font-bold" id="card-comm-bs">0.00 Bs</span>
+                    <!-- Diseño destacado para el Equivalente en Bs -->
+                    <div id="card-bs-result" class="hidden pt-3 mt-3 border-t border-primary/20 relative z-10">
+                        <div class="flex justify-between items-end">
+                            <span class="text-sm font-bold text-primary">Equivalente a:</span>
+                            <div class="text-right">
+                                <!-- Texto por defecto arreglado a Bs. -->
+                                <span class="block text-2xl font-bold text-primary font-mono leading-none" id="card-comm-bs">Bs. 0.00</span>
+                                <span class="text-[10px] text-primary font-bold opacity-80">Débito por comisión</span>
+                            </div>
                         </div>
-                        <p class="text-[10px] text-outline mt-1 text-right italic">*Calculado a Tasa BCV</p>
                     </div>
                 </div>
     
             </div>
-            <div class="h-2"></div>
         </div>
     </div>
 
@@ -1627,7 +1680,7 @@
             
             if (temporary) {
                 statusMessageTimeout = setTimeout(() => {
-                    statusMsg.innerText = "Toda tu información en un solo lugar";
+                    statusMsg.innerText = "Todas tus tasas en un solo lugar";
                     statusDot.classList.add('hidden'); // Lo ocultamos al volver al mensaje default
                 }, 5000);
             }
@@ -2702,7 +2755,8 @@
 
         // --- LOGICA DEL MODAL TARJETA ---
         
-        let currentCardCommission = 1.5; // Porcentaje por defecto
+        let currentCardCommission = 1.5; 
+        let cardCalcMode = 'spend'; // 'spend' (Quiero gastar) o 'have' (Tengo en la cuenta)
 
         function openCardModal() {
             const modal = document.getElementById('card-modal');
@@ -2730,22 +2784,87 @@
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
+        function switchCardMode() {
+            const mode = document.querySelector('input[name="card-mode"]:checked').value;
+            cardCalcMode = mode;
+            
+            const labelInput = document.getElementById('card-input-label');
+            const labelBase = document.getElementById('card-base-label');
+            const labelMain = document.getElementById('card-main-label');
+            const symbolMain = document.getElementById('card-main-symbol');
+            
+            const bsContainer = document.getElementById('card-bs-container');
+
+            if (cardCalcMode === 'spend') {
+                labelInput.innerText = "Monto a Pagar ($)";
+                labelBase.innerText = "Operación Base:";
+                labelMain.innerText = "Total a Debitar:";
+                symbolMain.innerText = "Necesario en USD";
+                
+                // Mostrar la opción de bolívares
+                bsContainer.classList.remove('hidden');
+            } else {
+                labelInput.innerText = "Dinero disponible en la cuenta ($)";
+                labelBase.innerText = "Saldo en Cuenta:";
+                labelMain.innerText = "Podrás Gastar:";
+                symbolMain.innerText = "Monto Neto (USD)";
+                
+                // Ocultar y desmarcar la opción de bolívares automáticamente
+                bsContainer.classList.add('hidden');
+                const checkBs = document.getElementById('card-bs-check');
+                if(checkBs.checked) {
+                    checkBs.checked = false;
+                    toggleCardBsOptions(); // Esto oculta el cuadro de resultados de Bs.
+                }
+            }
+            
+            document.getElementById('card-amount').value = '';
+            calculateCard();
+        }
+
         function setCardCommission(pct) {
             currentCardCommission = pct;
             
-            // Actualizar interfaz de los botones
-            const btn15 = document.getElementById('btn-card-15');
-            const btn25 = document.getElementById('btn-card-25');
-            
-            const activeClass = "flex-1 py-2 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all";
-            const inactiveClass = "flex-1 py-2 rounded-xl text-xs font-bold border border-outline/30 text-onSurface hover:bg-surfaceVariant transition-all";
+            const btnStylesActive = "flex-1 py-2.5 rounded-xl text-xs font-bold border border-primary bg-primary text-onPrimary transition-all shadow-md";
+            const btnStylesInactive = "flex-1 py-2.5 rounded-xl text-xs font-bold border border-outline/20 text-onSurface hover:bg-surfaceVariant transition-all bg-transparent";
 
-            if (pct === 1.5) {
-                btn15.className = activeClass;
-                btn25.className = inactiveClass;
+            ['15', '25', '50'].forEach(id => {
+                const btn = document.getElementById(`btn-card-${id}`);
+                const val = id === '15' ? 1.5 : (id === '25' ? 2.5 : 5.0);
+                if (pct === val) btn.className = btnStylesActive;
+                else btn.className = btnStylesInactive;
+            });
+            
+            calculateCard();
+        }
+
+        function toggleCardBsOptions() {
+            const check = document.getElementById('card-bs-check');
+            const options = document.getElementById('card-bs-options');
+            const resultBox = document.getElementById('card-bs-result');
+
+            if (check.checked) {
+                options.classList.remove('hidden');
+                options.classList.add('flex');
+                resultBox.classList.remove('hidden');
             } else {
-                btn15.className = inactiveClass;
-                btn25.className = activeClass;
+                options.classList.add('hidden');
+                options.classList.remove('flex');
+                resultBox.classList.add('hidden');
+            }
+            calculateCard();
+        }
+
+        function handleCardRateChange() {
+            const type = document.querySelector('input[name="cardBsRate"]:checked').value;
+            const customBox = document.getElementById('card-bs-custom-box');
+            
+            if (type === 'custom') {
+                customBox.classList.remove('hidden');
+                // Auto-enfocar el input para que aparezca el teclado en móviles
+                setTimeout(() => document.getElementById('card-bs-custom-rate').focus(), 50);
+            } else {
+                customBox.classList.add('hidden');
             }
             
             calculateCard();
@@ -2753,22 +2872,56 @@
 
         function calculateCard() {
             const amount = parseFloat(document.getElementById('card-amount').value) || 0;
-            const rateBCV = rates.dolar;
-
-            // Cálculo con comisión dinámica
-            const commUSD = amount * (currentCardCommission / 100);
-            const totalUSD = amount + commUSD;
+            const commPct = currentCardCommission / 100;
             
-            // Conversión a Bs (Solo la comisión)
-            const commBS = commUSD * rateBCV;
+            let baseUsd = 0;
+            let commUsd = 0;
+            let mainUsd = 0;
 
-            // Actualizar etiqueta de texto para que muestre 1.5% o 2.5%
+            if (amount > 0) {
+                if (cardCalcMode === 'spend') {
+                    // Modo Normal: Pones el precio del producto -> Te dice cuánto necesitas en total
+                    baseUsd = amount;
+                    commUsd = baseUsd * commPct;
+                    mainUsd = baseUsd + commUsd;
+                } else {
+                    // Modo Inverso: Pones lo que tienes en el banco -> Te dice cuánto es lo máximo que puedes gastar
+                    mainUsd = amount; // El dinero total es el límite
+                    baseUsd = mainUsd / (1 + commPct); // Extraemos la base real
+                    commUsd = mainUsd - baseUsd; // Lo que sobra es la comisión
+                }
+            }
+
+            // Actualizar etiqueta
             document.getElementById('card-comm-label').innerText = `Comisión (${currentCardCommission}%):`;
 
-            // Renderizar valores
-            document.getElementById('card-comm-usd').innerText = '$' + commUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            document.getElementById('card-total-usd').innerText = '$' + totalUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            document.getElementById('card-comm-bs').innerText = formatNumber(commBS) + ' Bs';
+            // Formatear resultados
+            const fmt = (num) => '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
+            if (cardCalcMode === 'spend') {
+                document.getElementById('card-base-usd').innerText = fmt(baseUsd);
+                document.getElementById('card-comm-usd').innerText = fmt(commUsd);
+                document.getElementById('card-main-usd').innerText = fmt(mainUsd);
+            } else {
+                document.getElementById('card-base-usd').innerText = fmt(mainUsd); 
+                document.getElementById('card-comm-usd').innerText = fmt(commUsd);
+                document.getElementById('card-main-usd').innerText = fmt(baseUsd); 
+            }
+
+            // Lógica de Comisión en Bolívares (Ahora solo se calcula si estamos en modo 'spend')
+            const isBsChecked = document.getElementById('card-bs-check').checked;
+            if (isBsChecked && cardCalcMode === 'spend') {
+                const type = document.querySelector('input[name="cardBsRate"]:checked').value;
+                let rate = 0;
+                
+                if (type === 'dolar') rate = rates.dolar;
+                else if (type === 'euro') rate = rates.euro;
+                else rate = parseFloat(document.getElementById('card-bs-custom-rate').value) || 0;
+                
+                const commBs = commUsd * rate;
+                // Formato correcto: Bs. primero
+                document.getElementById('card-comm-bs').innerText = 'Bs. ' + formatNumber(commBs);
+            }
         }
 
         // --- LOGICA DEL MODAL WALLETS ---
