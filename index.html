@@ -119,96 +119,118 @@
 
 <body class="flex flex-col items-center min-h-[100dvh] p-0 sm:p-4 overflow-hidden">
 
-    <!-- BOTON DE CONFIGURACION (Global) -->
-    <div class="absolute top-4 right-4 z-50">
-        <button onclick="toggleSettings()"
-            class="p-2 rounded-full bg-surface shadow-md text-onSurface hover:bg-surfaceVariant transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-        </button>
-
-        <div id="settings-menu"
-            class="hidden absolute right-0 mt-2 w-56 bg-surface rounded-2xl shadow-material p-4 border border-outline/10 backdrop-blur-md">
-            <div class="relative z-10">
-                <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-4">Configuración</h3>
-                <div class="flex items-center justify-between mb-5 cursor-pointer group" onclick="toggleDarkMode()">
-                    <div class="flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 text-onSurface">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                        </svg>
-                        <span class="text-sm font-medium text-onSurface">Modo Oscuro</span>
-                    </div>
-                    <div id="dark-toggle-bg" class="w-11 h-6 rounded-full relative transition-colors duration-300"
-                        style="background-color: var(--toggle-bg);">
-                        <div class="absolute w-4 h-4 bg-white rounded-full top-1 left-1 shadow-sm transition-transform duration-300"
-                            id="dark-toggle-dot"></div>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="flex items-center gap-3 mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 text-onSurface">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.85 6.361a15.996 15.996 0 00-4.647 4.763m0 0c-.393.393-.78.77-1.164 1.128-.27.248-.482.492-.66.721" />
-                        </svg>
-                        <span class="text-sm font-medium text-onSurface">Color de Tema</span>
-                    </div>
-                    <div class="flex gap-3 justify-between px-1">
-                        <button onclick="setTheme('#006a6a')"
-                            class="w-6 h-6 rounded-full bg-[#006a6a] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
-                        <button onclick="setTheme('#005cbb')"
-                            class="w-6 h-6 rounded-full bg-[#005cbb] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
-                        <button onclick="setTheme('#8d4386')"
-                            class="w-6 h-6 rounded-full bg-[#8d4386] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
-                        <button onclick="setTheme('#b53d00')"
-                            class="w-6 h-6 rounded-full bg-[#b53d00] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
-                        <button onclick="setTheme('#4b650b')"
-                            class="w-6 h-6 rounded-full bg-[#4b650b] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- CONTENEDOR PRINCIPAL SPA -->
     <main
         class="w-full max-w-md bg-surface h-[100dvh] sm:h-[90vh] sm:rounded-[32px] sm:shadow-material overflow-hidden flex flex-col relative transition-colors duration-300 pb-20">
 
         <!-- HEADER GLOBAL (Aparece en todas las vistas) -->
-        <header class="pt-6 pb-2 px-6 flex justify-between items-center shrink-0">
+        <header class="pt-6 pb-2 px-6 flex justify-between items-center shrink-0 relative z-50">
+        
             <div class="flex items-center gap-3">
                 <div
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primaryContainer text-onPrimaryContainer shadow-sm transition-colors">
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primaryContainer text-onPrimaryContainer shadow-sm transition-colors shrink-0">
                     <span class="font-bold text-lg">$</span>
                 </div>
-                <div>
+                <div class="flex flex-col justify-center">
                     <h1 class="text-xl font-bold text-onSurface transition-colors leading-tight">Tasa3</h1>
-                    <p class="text-xs text-outline transition-colors flex items-center gap-1" id="status-text">
-                        <span class="relative flex h-2 w-2">
+                    <p class="text-xs text-outline transition-colors flex items-center gap-1.5 mt-0.5" id="status-text">
+                        <span id="status-dot" class="relative flex h-2 w-2 shrink-0">
                             <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4CAF50] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#4CAF50]"></span>
                         </span>
-                        Actualizado
+                        <span id="status-msg" class="truncate max-w-[150px] sm:max-w-[200px]">Cargando tasas...</span>
                     </p>
                 </div>
             </div>
 
-            <button onclick="fetchData()" id="refresh-btn"
-                class="p-2 rounded-full bg-surfaceVariant text-onSurface hover:bg-primaryContainer hover:text-onPrimaryContainer transition-all active:scale-95">
-                <svg id="refresh-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                </svg>
-                <div id="loading-spinner" class="loader hidden !border-t-primary"></div>
-            </button>
+            <div class="flex items-center gap-1">
+                <!-- Botón Refrescar -->
+                <button onclick="fetchData()" id="refresh-btn"
+                    class="p-2 rounded-full text-onSurface hover:bg-surfaceVariant transition-all active:scale-95 shrink-0">
+                    <svg id="refresh-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    <div id="loading-spinner" class="loader hidden !border-t-primary"></div>
+                </button>
+
+                <!-- Botón Configuración y su Menú (Ahora integrados aquí) -->
+                <div class="relative shrink-0">
+                    <button onclick="toggleSettings()"
+                        class="p-2 rounded-full bg-surface shadow-sm border border-outline/10 text-onSurface hover:bg-surfaceVariant transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
+
+                    <!-- Menú de Configuración (Reposicionado dinámicamente) -->
+                    <div id="settings-menu"
+                        class="hidden absolute right-0 top-full mt-2 w-56 bg-surface rounded-2xl shadow-material p-4 border border-outline/10 backdrop-blur-md">
+                        <div class="relative z-10">
+                            <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-4">Configuración</h3>
+                    
+                            <div class="flex items-center justify-between mb-5 cursor-pointer group" onclick="toggleDarkMode()">
+                                <div class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-5 h-5 text-onSurface">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                                    </svg>
+                                    <span class="text-sm font-medium text-onSurface">Modo Oscuro</span>
+                                </div>
+                                <div id="dark-toggle-bg" class="w-11 h-6 rounded-full relative transition-colors duration-300"
+                                    style="background-color: var(--toggle-bg);">
+                                    <div class="absolute w-4 h-4 bg-white rounded-full top-1 left-1 shadow-sm transition-transform duration-300"
+                                        id="dark-toggle-dot"></div>
+                                </div>
+                            </div>
+                    
+                            <div class="mb-2">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-5 h-5 text-onSurface">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.85 6.361a15.996 15.996 0 00-4.647 4.763m0 0c-.393.393-.78.77-1.164 1.128-.27.248-.482.492-.66.721" />
+                                    </svg>
+                                    <span class="text-sm font-medium text-onSurface">Color de Tema</span>
+                                </div>
+                                <div class="flex gap-3 justify-between px-1">
+                                    <button onclick="setTheme('#006a6a')"
+                                        class="w-6 h-6 rounded-full bg-[#006a6a] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                                    <button onclick="setTheme('#005cbb')"
+                                        class="w-6 h-6 rounded-full bg-[#005cbb] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                                    <button onclick="setTheme('#8d4386')"
+                                        class="w-6 h-6 rounded-full bg-[#8d4386] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                                    <button onclick="setTheme('#b53d00')"
+                                        class="w-6 h-6 rounded-full bg-[#b53d00] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                                    <button onclick="setTheme('#4b650b')"
+                                        class="w-6 h-6 rounded-full bg-[#4b650b] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
+                                </div>
+                            </div>
+                    
+                            <div class="mt-4 pt-3 border-t border-outline/10">
+                                <button onclick="goToOldVersion()"
+                                    class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-surfaceVariant/50 transition-colors text-left group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="w-5 h-5 text-onSurface opacity-70 group-hover:text-primary transition-colors">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                                    </svg>
+                                    <span
+                                        class="text-sm font-medium text-onSurface opacity-80 group-hover:text-primary transition-colors">Versión
+                                        anterior</span>
+                                </button>
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <!-- ============================================== -->
@@ -1518,11 +1540,19 @@
     </div>
 
     <script>
+        // Redirección inmediata si el usuario prefiere la versión vieja
+        if (localStorage.getItem('useOldVersion') === 'true') {
+            window.location.href = 'calc_old.html';
+        }
+
         // Config
         const API_URL = 'https://raw.githubusercontent.com/JCZR2000/ComercioPrecioAPI/main/tasas_cambio.json';
         let rates = { dolar: 0, euro: 0, usdt: 0, custom: 0, usdt_compra: 0, usdt_venta: 0 };
         let currentCurrency = 'dolar';
         let isBsOnTop = false;
+        
+        let lastSyncTime = "--:--";      // Para la hora real de consulta
+        let statusMessageTimeout;        // Para el animador de texto
 
         // UI Refs
         const ui = {
@@ -1536,7 +1566,6 @@
             symbolBottom: document.getElementById('symbol-bottom'),
             rateDisplay: document.getElementById('rate-display'),
             lastUpdated: document.getElementById('last-updated'),
-            status: document.getElementById('status-text'),
             refreshIcon: document.getElementById('refresh-icon'),
             spinner: document.getElementById('loading-spinner'),
             toast: document.getElementById('toast'),
@@ -1547,6 +1576,36 @@
             darkToggleBg: document.getElementById('dark-toggle-bg'),
             darkToggleDot: document.getElementById('dark-toggle-dot')
         };
+
+        // Esta función controla el temporizador de los 5 segundos mágicamente
+        function setStatus(msg, temporary = false) {
+            const statusMsg = document.getElementById('status-msg');
+            const statusDot = document.getElementById('status-dot');
+            if(!statusMsg) return;
+            
+            clearTimeout(statusMessageTimeout); 
+            statusMsg.innerText = msg;
+            
+            // Mostrar u ocultar el ícono verde pulsante
+            if (msg === "Tasas actualizadas" || msg === "Actualizando tasas...") {
+                statusDot.classList.remove('hidden');
+            } else {
+                statusDot.classList.add('hidden');
+            }
+            
+            if (temporary) {
+                statusMessageTimeout = setTimeout(() => {
+                    statusMsg.innerText = "Toda tu información en un solo lugar";
+                    statusDot.classList.add('hidden'); // Lo ocultamos al volver al mensaje default
+                }, 5000);
+            }
+        }
+
+        // Función para cambiar a la versión vieja
+        function goToOldVersion() {
+            localStorage.setItem('useOldVersion', 'true');
+            window.location.href = 'calc_old.html';
+        }
 
         function switchView(viewName) {
             // 1. Ocultar todas las vistas
@@ -1587,12 +1646,11 @@
                 document.getElementById('quote-dolar').innerText = 'Bs. ' + formatNumber(rates.dolar);
                 document.getElementById('quote-euro').innerText = 'Bs. ' + formatNumber(rates.euro);
                 document.getElementById('quote-usdt').innerText = 'Bs. ' + formatNumber(rates.usdt);
-                
-                // Nuevos valores para la vista expandible
                 document.getElementById('quote-usdt-compra').innerText = 'Bs. ' + formatNumber(rates.usdt_compra);
                 document.getElementById('quote-usdt-venta').innerText = 'Bs. ' + formatNumber(rates.usdt_venta);
                 
-                document.getElementById('quote-time').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                // Ahora inyectamos la hora anclada y exacta
+                document.getElementById('quote-time').innerText = lastSyncTime;
             }
         }
 
@@ -1685,10 +1743,11 @@
                     rates.dolar = data.dolar;
                     rates.euro = data.euro;
                     rates.usdt = data.usdt;
-                    
-                    // Extraemos los nuevos valores. Si la API no los tiene, usamos el general por defecto.
                     rates.usdt_compra = data.usdt_promedio_compra || data.usdt;
                     rates.usdt_venta = data.usdt_promedio_venta || data.usdt;
+                    
+                    // Solo actualizamos la hora real cuando se recibe data limpia y exitosa
+                    lastSyncTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     
                     updateQuotesView(); 
 
@@ -1696,10 +1755,13 @@
                         updateUIInfo();
                         recalculate();
                     }
+                    
+                    // Llamamos la función con el switch temporal activado
+                    setStatus("Tasas actualizadas", true);
                 }
             } catch (error) {
                 console.error(error);
-                ui.status.innerText = "Error conexión";
+                setStatus("Error de conexión");
                 showError("No se pudieron cargar las tasas");
             } finally {
                 setLoading(false);
@@ -1964,20 +2026,28 @@
             if(rates.usdt) document.getElementById('menu-rate-usdt').innerText = formatNumber(rates.usdt) + ' Bs';
 
             if (currentCurrency === 'custom') {
-                 ui.status.innerText = "Modo manual";
+                 setStatus("Modo manual");
             } else {
-                ui.status.innerText = "Tasas actualizadas";
+                const statusMsg = document.getElementById('status-msg');
+                // Si salimos del modo manual, regresamos al texto descriptivo
+                if (statusMsg && statusMsg.innerText === "Modo manual") {
+                    setStatus("Toda tu información en un solo lugar");
+                }
                 const rate = rates[currentCurrency];
-                // Actualizar el precio en el botón principal cerrado
                 document.getElementById('selected-currency-rate').innerText = `Bs. ${formatNumber(rate)}`;
             }
         }
+
         function setLoading(isLoading) {
             ui.refreshIcon.classList.toggle('hidden', isLoading);
             ui.spinner.classList.toggle('hidden', !isLoading);
-            if (isLoading) ui.status.innerText = "Actualizando..."; else ui.status.innerText = "Tasas actualizadas";
+            if (isLoading) {
+                setStatus("Actualizando tasas...");
+            }
         }
+
         function formatNumber(num) { return new Intl.NumberFormat('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num); }
+
         function showError(msg) {
             if (msg) {
                 document.getElementById('error-msg').innerText = msg;
