@@ -165,6 +165,16 @@
                             class="w-6 h-6 rounded-full bg-[#4b650b] ring-2 ring-offset-2 ring-transparent hover:scale-110 transition-transform shadow-sm"></button>
                     </div>
                 </div>
+
+                <button onclick="goToNewVersion()"
+                    class="w-full mt-5 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary text-onPrimary font-bold text-xs uppercase tracking-wider shadow-sm hover:shadow-md transition-all active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                        class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                    Cambiar a la nueva versión
+                </button>
             </div>
 
             <hr class="border-outline/10 my-3">
@@ -1099,6 +1109,13 @@
     </div>
 
     <script>
+
+        // --- REDIRECCIÓN A NUEVA VERSIÓN ---
+        function goToNewVersion() {
+            localStorage.removeItem('useOldVersion');
+            window.location.href = 'https://jczr2000.github.io/Tasa3/';
+        }
+
         // Config
         const API_URL = 'https://raw.githubusercontent.com/JCZR2000/ComercioPrecioAPI/main/tasas_cambio.json';
         let rates = { dolar: 0, euro: 0, usdt: 0, custom: 0 };
