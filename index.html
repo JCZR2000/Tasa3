@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Tasas | V3</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <script>
@@ -267,7 +268,7 @@
             </div>
         
             <!-- Tarjeta Euro -->
-            <div class="bg-surfaceVariant/30 rounded-2xl p-4 mb-6 border border-outline/10 flex justify-between items-center">
+            <div class="bg-surfaceVariant/30 rounded-2xl p-4 mb-3 border border-outline/10 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div
                         class="w-10 h-10 rounded-full bg-primary text-onPrimary shadow-sm flex items-center justify-center text-xl font-bold transition-colors">
@@ -282,6 +283,36 @@
                     <span class="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-md font-bold">Oficial</span>
                 </div>
             </div>
+
+            <!-- Tarjeta Intervención Digital (Botón clickeable) -->
+            <button onclick="openChartModal()"
+                class="w-full bg-surfaceVariant/30 rounded-2xl p-4 mb-6 border border-outline/10 flex justify-between items-center hover:bg-surfaceVariant/60 transition-colors text-left group shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-primary text-onPrimary shadow-sm flex items-center justify-center text-xl font-bold transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-outline font-medium group-hover:text-primary transition-colors">Intervención Digital
+                        </p>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <p class="text-xl font-bold text-onSurface font-mono" id="quote-intervencion">Bs. 0.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 text-primary transition-transform duration-300 group-hover:translate-x-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-md font-bold">Oficial</span>
+                </div>
+            </button>
         
             <h2 class="text-sm font-bold text-primary uppercase tracking-wider mb-4">Mercados Digitales</h2>
         
@@ -1624,6 +1655,148 @@
         </div>
     </div>
 
+    <!-- MODAL DE GRÁFICO (INTERVENCIÓN) -->
+    <div id="chart-modal" class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0" id="chart-backdrop"
+            onclick="closeChartModal()"></div>
+    
+        <div class="relative w-full sm:w-[480px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col h-[90vh] transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
+            id="chart-content">
+    
+            <div class="flex justify-between items-center p-6 pb-2 shrink-0 border-b border-outline/5">
+                <div class="flex items-center gap-3">
+                    <button onclick="closeChartModal()"
+                        class="p-2 -ml-2 rounded-full hover:bg-surfaceVariant text-onSurface transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <!-- Icono Añadido -->
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary text-onPrimary shadow-sm flex items-center justify-center text-sm font-bold transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-[10px] font-bold text-outline uppercase tracking-widest">Banco Central de
+                                Venezuela</h2>
+                            <p class="text-xs text-onSurface font-bold">Intervención Digital</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="flex flex-col flex-1 overflow-y-auto hide-scrollbar">
+                <!-- Cabecera del precio -->
+                <div class="px-6 pt-4 pb-2">
+                    <div class="flex justify-between items-end">
+                        <span class="text-sm font-bold text-onSurface">USD / VES</span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                        <span class="text-4xl font-bold text-onSurface font-mono" id="chart-main-price">Bs. 0.00</span>
+                        <span class="text-sm font-bold flex items-center gap-0.5 px-2 py-0.5 rounded-md"
+                            id="chart-main-var">
+                            <!-- Icono y % inyectados por JS -->
+                        </span>
+                    </div>
+                    <span class="text-xs text-outline font-medium mt-1 block" id="chart-main-date">-- de --</span>
+                </div>
+    
+                <!-- Contenedor del Gráfico Interactivo -->
+                <div class="w-full h-48 sm:h-64 mt-4 relative px-2">
+                    <canvas id="priceChart"></canvas>
+                </div>
+    
+                <!-- Botones de Período de Tiempo -->
+                <div class="flex justify-center gap-2 px-6 mt-6 shrink-0">
+                    <button onclick="renderChartPeriod('7D')" id="btn-period-7D"
+                        class="period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all">7D</button>
+                    <button onclick="renderChartPeriod('1M')" id="btn-period-1M"
+                        class="period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all">1M</button>
+                    <button onclick="renderChartPeriod('3M')" id="btn-period-3M"
+                        class="period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all">3M</button>
+                    <button onclick="renderChartPeriod('6M')" id="btn-period-6M"
+                        class="period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all">6M</button>
+                    <button onclick="renderChartPeriod('1A')" id="btn-period-1A"
+                        class="period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all">1A</button>
+                </div>
+    
+                <!-- Estadísticas Inferiores -->
+                <div class="p-6 pb-8 mt-4 shrink-0">
+                    <div
+                        class="bg-surfaceVariant/30 border border-outline/10 rounded-2xl p-5 flex flex-col gap-4 shadow-sm">
+    
+                        <div class="flex items-start gap-4 pb-4 border-b border-outline/5">
+                            <div class="p-2 bg-surface rounded-xl shadow-sm text-outline shrink-0"><svg
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                </svg></div>
+                            <div>
+                                <span class="text-[10px] text-outline uppercase tracking-wider font-bold">Última
+                                    actualización</span>
+                                <span class="block text-sm font-bold text-onSurface mt-0.5" id="stats-updated">--</span>
+                            </div>
+                        </div>
+    
+                        <div class="flex items-start gap-4 pb-4 border-b border-outline/5">
+                            <div class="p-2 bg-surface rounded-xl shadow-sm text-outline shrink-0"><svg
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                                </svg></div>
+                            <div>
+                                <span class="text-[10px] text-outline uppercase tracking-wider font-bold">Cierre
+                                    anterior</span>
+                                <span class="block text-sm font-bold font-mono text-onSurface mt-0.5" id="stats-prev">Bs.
+                                    0.00</span>
+                            </div>
+                        </div>
+    
+                        <div class="flex items-start gap-4 pb-4 border-b border-outline/5">
+                            <div class="p-2 bg-surface rounded-xl shadow-sm text-outline shrink-0"><svg
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg></div>
+                            <div>
+                                <span class="text-[10px] text-outline uppercase tracking-wider font-bold">Valor
+                                    actual</span>
+                                <span class="block text-sm font-bold font-mono text-onSurface mt-0.5" id="stats-current">Bs.
+                                    0.00</span>
+                            </div>
+                        </div>
+    
+                        <div class="flex items-start gap-4">
+                            <div class="p-2 rounded-xl shadow-sm shrink-0" id="stats-var-icon-box">
+                                <!-- Se inyecta icono arriba/abajo -->
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-outline uppercase tracking-wider font-bold">Variación
+                                    neta</span>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-sm font-bold font-mono" id="stats-var-abs">+0.00</span>
+                                    <span class="text-xs font-bold px-1.5 py-0.5 rounded-md" id="stats-var-pct">0.00%</span>
+                                </div>
+                                <span class="text-[10px] text-outline mt-0.5 block">Respecto al cierre anterior</span>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
     <script>
         // Redirección inmediata si el usuario prefiere la versión vieja
         if (localStorage.getItem('useOldVersion') === 'true') {
@@ -1632,10 +1805,14 @@
 
         // Config
         const API_URL = 'https://raw.githubusercontent.com/JCZR2000/ComercioPrecioAPI/main/tasas_cambio.json';
-        let rates = { dolar: 0, euro: 0, usdt: 0, custom: 0, usdt_compra: 0, usdt_venta: 0 };
+        const INTERVENCION_URL = 'https://raw.githubusercontent.com/JCZR2000/ComercioPrecioAPI/main/intervencion_digital.json';
+
+        let rates = { dolar: 0, euro: 0, usdt: 0, custom: 0, usdt_compra: 0, usdt_venta: 0, intervencion: 0 };
+        let intervencionHistory = []; // Guardará el array completo de JSON
+        let chartInstance = null; // Instancia de Chart.js
+
         let currentCurrency = 'dolar';
         let isBsOnTop = false;
-        
         let lastSyncTime = "--:--";      // Para la hora real de consulta
         let statusMessageTimeout;        // Para el animador de texto
 
@@ -1737,7 +1914,10 @@
                 document.getElementById('quote-usdt-compra').innerText = 'Bs. ' + formatNumber(rates.usdt_compra);
                 document.getElementById('quote-usdt-venta').innerText = 'Bs. ' + formatNumber(rates.usdt_venta);
                 
-                // Ahora inyectamos la hora anclada y exacta
+                // Actualiza el de Intervención
+                document.getElementById('quote-intervencion').innerText = 'Bs. ' + formatNumber(rates.intervencion);
+                
+                // RESTAURADO: Muestra la hora de sincronización global
                 document.getElementById('quote-time').innerText = lastSyncTime;
             }
         }
@@ -1822,19 +2002,33 @@
         async function fetchData() {
             setLoading(true);
             try {
-                const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
-                if (!response.ok) throw new Error("Error API");
+                // Fetch de ambas APIs simultáneamente para mayor rapidez
+                const [resRates, resInt] = await Promise.all([
+                    fetch(`${API_URL}?t=${new Date().getTime()}`),
+                    fetch(`${INTERVENCION_URL}?t=${new Date().getTime()}`)
+                ]);
                 
-                const data = await response.json();
+                if (!resRates.ok || !resInt.ok) throw new Error("Error API");
                 
-                if (data.dolar && data.euro && data.usdt) {
+                const data = await resRates.json();
+                const intData = await resInt.json();
+                
+                if (data.dolar && data.euro && data.usdt && Array.isArray(intData)) {
+                    // Ordenar historial de intervención de más nuevo a más viejo por fecha
+                    intervencionHistory = intData.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                    
                     rates.dolar = data.dolar;
                     rates.euro = data.euro;
                     rates.usdt = data.usdt;
                     rates.usdt_compra = data.usdt_promedio_compra || data.usdt;
                     rates.usdt_venta = data.usdt_promedio_venta || data.usdt;
                     
-                    // Solo actualizamos la hora real cuando se recibe data limpia y exitosa
+                    // Asignar el último valor de intervención
+                    if(intervencionHistory.length > 0) {
+                        rates.intervencion = intervencionHistory[0].dolar_intervencion;
+                    }
+
+                    // RESTAURADO: Usamos la hora local del sistema para toda la app
                     lastSyncTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     
                     updateQuotesView(); 
@@ -1843,8 +2037,6 @@
                         updateUIInfo();
                         recalculate();
                     }
-                    
-                    // Llamamos la función con el switch temporal activado
                     setStatus("Tasas actualizadas", true);
                 }
             } catch (error) {
@@ -2068,11 +2260,9 @@
             root.style.setProperty('--color-primary-container', color + '33');
             root.style.setProperty('--color-on-primary-container', color);
 
-            // --- NUEVAS VARIABLES PARA LA CAJA PERSONALIZADA ---
             // Añadimos la transparencia hexadecimal manualmente al color
             root.style.setProperty('--color-primary-10', color + '1a'); // Fondo (10% opacidad)
             root.style.setProperty('--color-primary-30', color + '4d'); // Borde (30% opacidad)
-            // ---------------------------------------------------
 
             const lightToggleColor = color + '25';
             root.style.setProperty('--toggle-bg', document.documentElement.classList.contains('dark') ? '#444746' : lightToggleColor);
@@ -2087,6 +2277,14 @@
             }
 
             updateBodyTint();
+
+            // NUEVO: Si la gráfica de intervención está abierta, re-dibujarla instantáneamente
+            const chartModal = document.getElementById('chart-modal');
+            if (chartModal && !chartModal.classList.contains('hidden') && typeof renderChartPeriod === 'function') {
+                const activeBtn = document.querySelector('.period-btn.bg-onSurface');
+                const period = activeBtn ? activeBtn.innerText : '1M';
+                renderChartPeriod(period);
+            }
         }
 
         // NUEVO: Función para teñir el fondo dinámicamente
@@ -3396,6 +3594,202 @@
                     });
                 }
             }
+        }
+
+        // ==========================================
+        // LÓGICA DEL GRÁFICO (INTERVENCIÓN)
+        // ==========================================
+        
+        function openChartModal() {
+            const modal = document.getElementById('chart-modal');
+            const backdrop = document.getElementById('chart-backdrop');
+            const content = document.getElementById('chart-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                content.classList.remove('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+            }, 10);
+            
+            // Cargar por defecto 1 Mes
+            renderChartPeriod('1M');
+        }
+
+        function closeChartModal() {
+            const modal = document.getElementById('chart-modal');
+            const backdrop = document.getElementById('chart-backdrop');
+            const content = document.getElementById('chart-content');
+
+            backdrop.classList.add('opacity-0');
+            content.classList.add('opacity-0', 'translate-y-full', 'sm:translate-y-10', 'scale-95');
+
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function renderChartPeriod(period) {
+            // Actualizar botones visualmente para que hereden el color primario
+            ['7D', '1M', '3M', '6M', '1A'].forEach(p => {
+                const btn = document.getElementById(`btn-period-${p}`);
+                if (p === period) {
+                    // Botón activo: usa el bg-primary
+                    btn.className = "period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-primary text-onPrimary shadow-sm";
+                } else {
+                    btn.className = "period-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all text-onSurface hover:bg-surfaceVariant";
+                }
+            });
+
+            if (intervencionHistory.length === 0) return;
+
+            // Determinar cuántos días filtrar
+            let daysToSubstract = 30; // 1M default
+            if(period === '7D') daysToSubstract = 7;
+            if(period === '3M') daysToSubstract = 90;
+            if(period === '6M') daysToSubstract = 180;
+            if(period === '1A') daysToSubstract = 365;
+
+            // Filtrar datos (intervencionHistory ya está de más nuevo a más viejo)
+            const latestDate = new Date(intervencionHistory[0].fecha + "T00:00:00");
+            const cutoffDate = new Date(latestDate);
+            cutoffDate.setDate(cutoffDate.getDate() - daysToSubstract);
+
+            let filteredData = intervencionHistory.filter(item => new Date(item.fecha + "T00:00:00") >= cutoffDate);
+            
+            // Si el filtro no arroja suficientes datos, tomar al menos los últimos disponibles
+            if (filteredData.length < 2) {
+                filteredData = intervencionHistory.slice(0, 10); 
+            }
+
+            // Invertimos para el gráfico (de izquierda más viejo a derecha más nuevo)
+            filteredData.reverse(); 
+
+            const labels = filteredData.map(item => {
+                const d = new Date(item.fecha + "T00:00:00");
+                return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+            });
+            const dataPoints = filteredData.map(item => item.dolar_intervencion);
+
+            drawChart(labels, dataPoints);
+            updateStatsUI();
+        }
+
+        function drawChart(labels, dataPoints) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            // Si ya existe un gráfico, destrúyelo antes de pintar uno nuevo
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const rootStyles = getComputedStyle(document.documentElement);
+            
+            // Obtenemos los colores dinámicos del tema elegido
+            const primaryColor = rootStyles.getPropertyValue('--color-primary').trim() || '#006a6a';
+            const primaryColorTranslucent = rootStyles.getPropertyValue('--color-primary-30').trim() || '#006a6a4d';
+
+            // Crear gradiente bonito del color del tema hacia transparente
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, primaryColorTranslucent);
+            gradient.addColorStop(1, isDark ? 'rgba(30, 30, 30, 0)' : 'rgba(250, 253, 252, 0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Intervención',
+                        data: dataPoints,
+                        borderColor: primaryColor, // <-- Línea del color del tema
+                        borderWidth: 3,
+                        pointBackgroundColor: primaryColor, // <-- Puntos del color del tema
+                        pointBorderColor: isDark ? '#1e1e1e' : '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 0, 
+                        pointHoverRadius: 6, 
+                        fill: true,
+                        backgroundColor: gradient, // <-- Sombra del color del tema
+                        tension: 0.4 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: primaryColor, // <-- Fondo del Tooltip del color del tema
+                            titleFont: { family: 'Roboto', size: 13 },
+                            bodyFont: { family: 'Roboto', size: 14, weight: 'bold' },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Bs. ' + context.parsed.y.toFixed(2);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { display: false }, 
+                        y: { 
+                            display: false,
+                            min: Math.min(...dataPoints) * 0.99, 
+                            max: Math.max(...dataPoints) * 1.01
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateStatsUI() {
+            if (intervencionHistory.length < 2) return; 
+
+            const current = intervencionHistory[0];
+            const prev = intervencionHistory[1];
+            
+            const diff = current.dolar_intervencion - prev.dolar_intervencion;
+            const pct = (diff / prev.dolar_intervencion) * 100;
+
+            // Formatear fechas corrigiendo zona horaria (Agregando T00:00:00)
+            const dateObj = new Date(current.fecha + "T00:00:00");
+            const dateStr = dateObj.toLocaleDateString('es-VE', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            // Cabecera Modal
+            document.getElementById('chart-main-price').innerText = 'Bs. ' + formatNumber(current.dolar_intervencion);
+            document.getElementById('chart-main-date').innerText = dateStr;
+
+            // Estadísticas inferiores (Usamos el lastSyncTime global que ahora vuelve a ser la hora correcta)
+            document.getElementById('stats-updated').innerText = lastSyncTime;
+            document.getElementById('stats-prev').innerText = 'Bs. ' + formatNumber(prev.dolar_intervencion);
+            document.getElementById('stats-current').innerText = 'Bs. ' + formatNumber(current.dolar_intervencion);
+
+            const isUp = diff >= 0; 
+            
+            // En finanzas, subir es "rojo" (inflación) y bajar es "verde"
+            const colorClass = isUp ? 'text-red-500' : 'text-[#4CAF50]';
+            const bgClass = isUp ? 'bg-red-500/10' : 'bg-[#4CAF50]/10';
+            const iconSvg = isUp 
+                ? '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>';
+
+            // Inyectar variaciones y colores en los Stats inferiores
+            document.getElementById('stats-var-icon-box').className = `p-2 rounded-xl shadow-sm shrink-0 ${bgClass} ${colorClass}`;
+            document.getElementById('stats-var-icon-box').innerHTML = iconSvg;
+
+            document.getElementById('stats-var-abs').innerText = (isUp ? '+' : '') + formatNumber(diff);
+            document.getElementById('stats-var-pct').innerText = (isUp ? '↑ ' : '↓ ') + Math.abs(pct).toFixed(2) + '%';
+            
+            // MEJORA VISUAL: Añadimos padding y rounded-lg para crear la etiqueta en forma de píldora
+            document.getElementById('stats-var-abs').className = `text-sm font-bold font-mono ${colorClass}`;
+            document.getElementById('stats-var-pct').className = `text-xs font-bold px-2 py-0.5 rounded-lg ${bgClass} ${colorClass}`;
+
+            // Inyectar variaciones en la Cabecera
+            document.getElementById('chart-main-var').innerHTML = `${iconSvg} ${Math.abs(pct).toFixed(2)}%`;
+            document.getElementById('chart-main-var').className = `text-sm font-bold flex items-center gap-0.5 px-2 py-0.5 rounded-lg ${bgClass} ${colorClass}`;
         }
 
     </script>
