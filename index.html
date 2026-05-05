@@ -585,6 +585,41 @@
                     </p>
                 </div>
 
+                <div id="historical-container"
+                    class="hidden mt-4 flex-col gap-3 z-10 relative bg-surfaceVariant/10 p-3.5 rounded-2xl border border-outline/5 transition-all">
+                    <div class="flex items-center justify-between px-1">
+                        <div class="flex items-center gap-2 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4" viewBox="0 0 24 24">
+                                <path
+                                    d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
+                            </svg>
+                            <span class="text-[11px] font-bold text-outline uppercase tracking-wider mt-0.5">¿Usar tasa de otra
+                                fecha?</span>
+                        </div>
+                
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" id="hist-toggle" class="sr-only peer" onchange="toggleHistoricalMode()">
+                            <div
+                                class="w-9 h-5 bg-outline/30 rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary transition-colors">
+                            </div>
+                        </label>
+                    </div>
+                
+                    <div id="hist-date-box"
+                        class="hidden relative bg-surface border border-outline/10 rounded-xl p-2 items-center gap-3 transition-all duration-300 shadow-inner">
+                        <div class="p-1.5 bg-primary/10 text-primary rounded-lg ml-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                        </div>
+                        <input type="date" id="hist-date-input" onchange="applyHistoricalDate()"
+                            class="flex-1 bg-transparent border-0 text-sm font-bold text-onSurface focus:ring-0 cursor-pointer outline-none"
+                            min="2021-10-01">
+                    </div>
+                </div>
+
                 <div class="mt-4 flex justify-center z-10 relative">
                     <button onclick="copyCombined()"
                         class="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-primary/10 text-primary font-bold hover:bg-primary/20 transition-colors shadow-sm border border-primary/10 active:scale-95">
@@ -1868,6 +1903,10 @@
         let lastSyncTime = "--:--";      // Para la hora real de consulta
         let statusMessageTimeout;        // Para el animador de texto
 
+        let isHistoricalActive = false;
+        let historicalRateValue = 0;
+        let historicalDateLabel = "";
+
         // UI Refs
         const ui = {
             inputTop: document.getElementById('input-top'),
@@ -1922,39 +1961,31 @@
         }
 
         function switchView(viewName) {
-            // 1. Ocultar todas las vistas
+            if(viewName !== 'calculator') resetHistoricalRate(false); // Limpiar al salir de la pestaña
+            
             ['view-quotes', 'view-calculator', 'view-tools'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
-
             const historyBtn = document.getElementById('history-btn');
             if (historyBtn) historyBtn.classList.toggle('hidden', viewName !== 'calculator');
-
-            // 2. Mostrar la vista seleccionada
             document.getElementById(`view-${viewName}`).classList.remove('hidden');
 
-            // 3. Resetear estilos del Navbar
             const navBtns = ['quotes', 'calculator', 'tools'];
             navBtns.forEach(btn => {
                 const el = document.getElementById(`nav-btn-${btn}`);
                 const indicator = el.querySelector('.nav-indicator');
                 const text = el.querySelector('span');
-        
                 if (btn === viewName) {
                     el.className = "nav-btn flex flex-col items-center justify-center w-16 h-full text-primary transition-colors";
-                    indicator.className = "nav-indicator bg-primary/20 py-1 px-4 rounded-full transition-all duration-300 mb-1";
+                    indicator.className = "nav-indicator bg-primary/20 py-1 px-4 rounded-full mb-1";
                     text.className = "text-[11px] font-bold tracking-wide";
                 } else {
-                    el.className = "nav-btn flex flex-col items-center justify-center w-16 h-full text-onSurface/70 hover:text-primary transition-colors";
-                    indicator.className = "nav-indicator py-1 px-4 rounded-full transition-all duration-300 mb-1";
+                    el.className = "nav-btn flex flex-col items-center justify-center w-16 h-full text-onSurface/70";
+                    indicator.className = "nav-indicator py-1 px-4 rounded-full mb-1";
                     text.className = "text-[11px] font-medium tracking-wide";
                 }
             });
-
-            // 4. Si se abre la vista de cotizaciones, asegurar que los datos estén puestos
-            if(viewName === 'quotes') {
-                updateQuotesView();
-            }
+            if(viewName === 'quotes') updateQuotesView();
         }
 
         // Actualizar valores en la vista de cotizaciones
@@ -2096,12 +2127,13 @@
         }
 
         function calculate(sourceInput) {
-            // Si es custom, usamos el valor del input, si no, el de la API
             let rate;
-            if (currentCurrency === 'custom') {
+            if (isHistoricalActive) {
+                rate = historicalRateValue;
+            } else if (currentCurrency === 'custom') {
                 rate = parseFloat(ui.inputCustomRate.value) || 0;
             } else if (currentCurrency === 'intervencion') {
-                rate = rates.intervencion * 1.005; // Aquí se aplica el +0.5%
+                rate = rates.intervencion * 1.005;
             } else {
                 rate = rates[currentCurrency];
             }
@@ -2109,12 +2141,11 @@
             if (!rate || rate === 0) return;
 
             const topVal = parseFloat(ui.inputTop.value);
-            const botVal = parseFloat(ui.inputBottom.value);
-            
             if (sourceInput === 'top') {
                 if (isNaN(topVal)) { ui.inputBottom.value = ''; return; }
                 ui.inputBottom.value = (!isBsOnTop ? topVal * rate : topVal / rate).toFixed(2);
             } else {
+                const botVal = parseFloat(ui.inputBottom.value);
                 if (isNaN(botVal)) { ui.inputTop.value = ''; return; }
                 ui.inputTop.value = (!isBsOnTop ? botVal / rate : botVal * rate).toFixed(2);
             }
@@ -2238,30 +2269,29 @@
 
         function setCurrency(currency) {
             currentCurrency = currency;
-            
-            // 1. Actualizar Textos en el botón desplegable principal
-            document.getElementById('selected-currency-name').innerText = currencyNames[currency];
+            resetHistoricalRate(false); // Resetear historial al cambiar de moneda
 
-            // 2. Actualizar el Icono dinámico
+            document.getElementById('selected-currency-name').innerText = currencyNames[currency];
             const iconData = currencyIcons[currency];
             const iconContainer = document.getElementById('selected-currency-icon');
-            
-            // Resetear las clases y asignar las correspondientes
             iconContainer.className = `w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold shadow-sm transition-colors shrink-0 ${iconData.classes}`;
             iconContainer.innerHTML = iconData.text;
 
-            // 3. Mostrar/Ocultar Input de Tasa Personalizada
+            // Mostrar selector histórico solo para Dólar y Euro
+            const histContainer = document.getElementById('historical-container');
+            if (currency === 'dolar' || currency === 'euro') {
+                histContainer.classList.remove('hidden');
+            } else {
+                histContainer.classList.add('hidden');
+            }
+
             if (currency === 'custom') {
                 ui.customRateContainer.classList.remove('hidden');
                 if(!ui.inputCustomRate.value && rates.dolar) ui.inputCustomRate.value = rates.dolar;
-                document.getElementById('selected-currency-rate').innerText = "Manual";
-                document.getElementById('selected-currency-rate').classList.replace('bg-primary/10', 'bg-surfaceVariant');
             } else {
                 ui.customRateContainer.classList.add('hidden');
-                document.getElementById('selected-currency-rate').classList.replace('bg-surfaceVariant', 'bg-primary/10');
             }
 
-            // 4. Advertencia USDT
             const warningBox = document.getElementById('usdt-warning');
             if (currency === 'usdt') warningBox.classList.remove('hidden');
             else warningBox.classList.add('hidden');
@@ -2359,34 +2389,38 @@
 
         // Helpers
         function updateUIInfo() {
-                ui.lastUpdated.innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            ui.lastUpdated.innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            // Lógica de precios en menú e interfaz
+            if(rates.dolar) document.getElementById('menu-rate-dolar').innerText = formatNumber(rates.dolar) + ' Bs';
+            if(rates.euro) document.getElementById('menu-rate-euro').innerText = formatNumber(rates.euro) + ' Bs';
+            if(rates.usdt) document.getElementById('menu-rate-usdt').innerText = formatNumber(rates.usdt) + ' Bs';
+            if(rates.intervencion) {
+                const el = document.getElementById('menu-rate-intervencion');
+                if(el) el.innerText = formatNumber(rates.intervencion * 1.005) + ' Bs';
+            }
 
-                // Actualizar los precios DENTRO del menú desplegable principal
-                if (rates.dolar) document.getElementById('menu-rate-dolar').innerText = formatNumber(rates.dolar) + ' Bs';
-                if (rates.euro) document.getElementById('menu-rate-euro').innerText = formatNumber(rates.euro) + ' Bs';
-                if (rates.intervencion) {
-                    const el = document.getElementById('menu-rate-intervencion');
-                    if (el) el.innerText = formatNumber(rates.intervencion * 1.005) + ' Bs';
-                }
-                if (rates.usdt) document.getElementById('menu-rate-usdt').innerText = formatNumber(rates.usdt) + ' Bs';
+            const rateDisplay = document.getElementById('selected-currency-rate');
+            if (currentCurrency === 'custom') {
+                 setStatus("Modo manual");
+                 rateDisplay.innerText = "Manual";
+            } else {
+                // CORRECCIÓN: Si hay una tasa histórica activa, mostrarla con un distintivo
+                let rate = isHistoricalActive ? historicalRateValue : rates[currentCurrency];
+                if (currentCurrency === 'intervencion' && !isHistoricalActive) rate *= 1.005;
 
-                if (currentCurrency === 'custom') {
-                    setStatus("Modo manual");
+                rateDisplay.innerText = `Bs. ${formatNumber(rate)}`;
+                
+                if (isHistoricalActive) {
+                    rateDisplay.classList.replace('bg-primary/10', 'bg-amber-500/10');
+                    rateDisplay.classList.add('text-amber-600');
+                    setStatus(`Usando tasa del ${historicalDateLabel}`);
                 } else {
-                    const statusMsg = document.getElementById('status-msg');
-                    if (statusMsg && statusMsg.innerText === "Modo manual") {
-                        setStatus("Toda tu información en un solo lugar");
-                    }
-
-                    // CORRECCIÓN: Aplicar el 0.5% a la vista principal de la calculadora
-                    let rate = rates[currentCurrency];
-                    if (currentCurrency === 'intervencion') {
-                        rate = rate * 1.005;
-                    }
-
-                    document.getElementById('selected-currency-rate').innerText = `Bs. ${formatNumber(rate)}`;
+                    rateDisplay.className = "text-sm font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md";
+                    setStatus("Todas tus tasas en un solo lugar");
                 }
             }
+        }
 
         function setLoading(isLoading) {
             ui.refreshIcon.classList.toggle('hidden', isLoading);
@@ -3919,6 +3953,76 @@
                 document.getElementById('bank-custom-rate').value = rates.intervencion;
                 calculateBank();
                 showToast("Tasa de intervención importada", "success");
+            }
+        }
+
+        // --- FUNCIONES DE CONTROL HISTÓRICO ---
+
+        function toggleHistoricalMode() {
+            const toggle = document.getElementById('hist-toggle');
+            const box = document.getElementById('hist-date-box');
+            
+            if (toggle.checked) {
+                box.classList.remove('hidden');
+                box.classList.add('flex'); // Mostrar el selector
+                
+                // Opcional: auto-abrir el calendario enfocado
+                setTimeout(() => document.getElementById('hist-date-input').focus(), 50);
+            } else {
+                // Al apagarlo, ocultamos la caja y reseteamos el valor de la calculadora
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+                resetHistoricalRate();
+            }
+        }
+
+        function applyHistoricalDate() {
+            const dateInput = document.getElementById('hist-date-input').value;
+            if (!dateInput) return;
+
+            const entry = bcvHistory.find(h => h.fecha === dateInput);
+            
+            if (entry && entry[currentCurrency]) {
+                isHistoricalActive = true;
+                historicalRateValue = entry[currentCurrency];
+                
+                const [y, m, d] = dateInput.split('-');
+                historicalDateLabel = `${d}/${m}/${y}`;
+                
+                showToast(`Tasa cargada: ${historicalDateLabel}`, "success");
+            } else {
+                showToast("No hay datos para esa fecha", "error");
+                // Si selecciona una fecha vacía o mala, resetear el valor pero dejar la caja abierta
+                isHistoricalActive = false;
+                historicalRateValue = 0;
+                document.getElementById('hist-date-input').value = "";
+            }
+            updateUIInfo();
+            recalculate();
+        }
+
+        function resetHistoricalRate(refreshUI = true) {
+            isHistoricalActive = false;
+            historicalRateValue = 0;
+            
+            // Limpiar inputs
+            const dateInput = document.getElementById('hist-date-input');
+            if (dateInput) dateInput.value = "";
+            
+            // Apagar interruptor visualmente
+            const toggle = document.getElementById('hist-toggle');
+            if (toggle) toggle.checked = false;
+            
+            // Ocultar caja
+            const box = document.getElementById('hist-date-box');
+            if (box) {
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+            }
+            
+            if (refreshUI) {
+                updateUIInfo();
+                recalculate();
             }
         }
 
