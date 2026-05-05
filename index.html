@@ -445,6 +445,20 @@
                             </div>
                             <span class="font-mono text-xs text-outline font-medium" id="menu-rate-euro">...</span>
                         </button>
+                        <button onclick="setCurrency('intervencion'); toggleCurrencyMenu();"
+                            class="w-full flex justify-between items-center p-4 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full bg-[#b53d00] text-white flex items-center justify-center shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                                    </svg>
+                                </span>
+                                <span class="font-bold text-onSurface text-sm">Intervención (+0.5%)</span>
+                            </div>
+                            <span class="font-mono text-xs text-outline font-medium" id="menu-rate-intervencion">...</span>
+                        </button>
                         <button onclick="setCurrency('usdt'); toggleCurrencyMenu();"
                             class="w-full flex justify-between items-center p-4 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5">
                             <div class="flex items-center gap-3">
@@ -827,9 +841,20 @@
             
                     <div id="bank-custom-rate-box" class="hidden">
                         <label class="text-xs text-outline ml-1">Tasa de Adjudicación Manual (Bs.)</label>
-                        <input type="number" id="bank-custom-rate" placeholder="0.00"
-                            class="mt-1 w-full bg-surfaceVariant/30 border border-outline/20 rounded-xl px-4 py-3 text-onSurface font-mono font-bold focus:ring-1 focus:ring-primary outline-none"
-                            oninput="calculateBank()">
+                        <div class="flex gap-2 mt-1">
+                            <input type="number" id="bank-custom-rate" placeholder="0.00"
+                                class="w-full bg-surfaceVariant/30 border border-outline/20 rounded-xl px-4 py-3 text-onSurface font-mono font-bold focus:ring-1 focus:ring-primary outline-none"
+                                oninput="calculateBank()">
+                            <button onclick="importIntervencionRate()"
+                                class="shrink-0 bg-primary/10 text-primary p-3 rounded-xl hover:bg-primary hover:text-onPrimary transition-colors flex items-center justify-center shadow-sm"
+                                title="Usar tasa de Intervención">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
             
                     <div id="bank-withdraw-box" class="hidden pt-2 border-t border-outline/10">
@@ -959,6 +984,16 @@
                                     class="w-full flex items-center gap-2 p-3 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5"><span
                                         class="w-6 h-6 rounded-full bg-primary text-onPrimary flex items-center justify-center text-xs font-bold shadow-sm">€</span><span
                                         class="font-bold text-onSurface text-[13px]">Euro BCV</span></button>
+                                <button onclick="setGapCurrency(1, 'intervencion')"
+                                    class="w-full flex items-center gap-2 p-3 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5">
+                                    <span class="w-6 h-6 rounded-full bg-[#b53d00] text-white flex items-center justify-center shadow-sm"><svg
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                            class="w-3 h-3">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                                        </svg></span>
+                                    <span class="font-bold text-onSurface text-[13px]">Intervención</span>
+                                </button>
                                 <button onclick="setGapCurrency(1, 'usdt')"
                                     class="w-full flex items-center gap-2 p-3 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5"><span
                                         class="w-6 h-6 rounded-full bg-[#26A17B] text-white flex items-center justify-center shadow-sm"><svg
@@ -1002,6 +1037,16 @@
                                     class="w-full flex items-center gap-2 p-3 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5"><span
                                         class="w-6 h-6 rounded-full bg-primary text-onPrimary flex items-center justify-center text-xs font-bold shadow-sm">€</span><span
                                         class="font-bold text-onSurface text-[13px]">Euro BCV</span></button>
+                                <button onclick="setGapCurrency(2, 'intervencion')"
+                                    class="w-full flex items-center gap-2 p-3 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5">
+                                    <span class="w-6 h-6 rounded-full bg-[#b53d00] text-white flex items-center justify-center shadow-sm"><svg
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                            class="w-3 h-3">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                                        </svg></span>
+                                    <span class="font-bold text-onSurface text-[13px]">Intervención</span>
+                                </button>
                                 <button onclick="setGapCurrency(2, 'usdt')"
                                     class="w-full flex items-center gap-2 p-3 hover:bg-surfaceVariant/50 transition-colors border-b border-outline/5"><span
                                         class="w-6 h-6 rounded-full bg-[#26A17B] text-white flex items-center justify-center shadow-sm"><svg
@@ -2049,6 +2094,8 @@
             let rate;
             if (currentCurrency === 'custom') {
                 rate = parseFloat(ui.inputCustomRate.value) || 0;
+            } else if (currentCurrency === 'intervencion') {
+                rate = rates.intervencion * 1.005; // Aquí se aplica el +0.5%
             } else {
                 rate = rates[currentCurrency];
             }
@@ -2097,6 +2144,7 @@
         function getCurrencyInfo(c) {
             if (c === 'dolar') return { label: "Monto en USD", symbol: "USD" };
             if (c === 'euro') return { label: "Monto en EUR", symbol: "EUR" };
+            if (c === 'intervencion') return { label: "Monto en USD", symbol: "USD" };
             if (c === 'usdt') return { label: "Monto en USDT", symbol: "USDT" };
             if (c === 'custom') return { label: "Monto en Divisa", symbol: "$" };
         }
@@ -2104,6 +2152,7 @@
         const currencyNames = { 
             dolar: "Dólar BCV", 
             euro: "Euro BCV", 
+            intervencion: "Intervención (+0.5%)",
             usdt: "USDT (Binance)", 
             custom: "Tasa Personalizada" 
         };
@@ -2112,6 +2161,7 @@
         const currencyIcons = {
             dolar: { text: "$", classes: "bg-primary text-onPrimary" },
             euro: { text: "€", classes: "bg-primary text-onPrimary" },
+            intervencion: { text: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>`, classes: "bg-[#b53d00] text-white" },
             usdt: {
                 text: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" class="w-5 h-5"><path d="M17.922 17.383v-.002c-.11.008-.677.042-1.942.042-1.01 0-1.721-.03-1.971-.042v.003c-3.888-.171-6.79-.848-6.79-1.658 0-.809 2.902-1.486 6.79-1.66v2.644c.254.018.982.061 1.988.061 1.207 0 1.812-.05 1.925-.06v-2.643c3.88.173 6.775.85 6.775 1.658 0 .81-2.895 1.485-6.775 1.657m0-3.59v-2.366h5.414V7.819H8.595v3.608h5.414v2.365c-4.4.202-7.709 1.074-7.709 2.118 0 1.044 3.309 1.915 7.709 2.118v7.582h3.913v-7.584c4.393-.202 7.694-1.073 7.694-2.116 0-1.043-3.301-1.914-7.694-2.117"/></svg>`,
                 classes: "bg-[#26A17B] text-white"
@@ -2300,25 +2350,34 @@
 
         // Helpers
         function updateUIInfo() {
-            ui.lastUpdated.innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            // Actualizar los precios DENTRO del menú desplegable
-            if(rates.dolar) document.getElementById('menu-rate-dolar').innerText = formatNumber(rates.dolar) + ' Bs';
-            if(rates.euro) document.getElementById('menu-rate-euro').innerText = formatNumber(rates.euro) + ' Bs';
-            if(rates.usdt) document.getElementById('menu-rate-usdt').innerText = formatNumber(rates.usdt) + ' Bs';
+                ui.lastUpdated.innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            if (currentCurrency === 'custom') {
-                 setStatus("Modo manual");
-            } else {
-                const statusMsg = document.getElementById('status-msg');
-                // Si salimos del modo manual, regresamos al texto descriptivo
-                if (statusMsg && statusMsg.innerText === "Modo manual") {
-                    setStatus("Toda tu información en un solo lugar");
+                // Actualizar los precios DENTRO del menú desplegable principal
+                if (rates.dolar) document.getElementById('menu-rate-dolar').innerText = formatNumber(rates.dolar) + ' Bs';
+                if (rates.euro) document.getElementById('menu-rate-euro').innerText = formatNumber(rates.euro) + ' Bs';
+                if (rates.intervencion) {
+                    const el = document.getElementById('menu-rate-intervencion');
+                    if (el) el.innerText = formatNumber(rates.intervencion * 1.005) + ' Bs';
                 }
-                const rate = rates[currentCurrency];
-                document.getElementById('selected-currency-rate').innerText = `Bs. ${formatNumber(rate)}`;
+                if (rates.usdt) document.getElementById('menu-rate-usdt').innerText = formatNumber(rates.usdt) + ' Bs';
+
+                if (currentCurrency === 'custom') {
+                    setStatus("Modo manual");
+                } else {
+                    const statusMsg = document.getElementById('status-msg');
+                    if (statusMsg && statusMsg.innerText === "Modo manual") {
+                        setStatus("Toda tu información en un solo lugar");
+                    }
+
+                    // CORRECCIÓN: Aplicar el 0.5% a la vista principal de la calculadora
+                    let rate = rates[currentCurrency];
+                    if (currentCurrency === 'intervencion') {
+                        rate = rate * 1.005;
+                    }
+
+                    document.getElementById('selected-currency-rate').innerText = `Bs. ${formatNumber(rate)}`;
+                }
             }
-        }
 
         function setLoading(isLoading) {
             ui.refreshIcon.classList.toggle('hidden', isLoading);
@@ -2835,17 +2894,21 @@
         function setGapCurrency(pos, currency, calc = true) {
             gapSelected[`s${pos}`] = currency;
 
-            // Actualizar el UI del botón
             const display = document.getElementById(`gap-display-${pos}`);
             const iconData = currencyIcons[currency];
-            const nameShort = currency === 'dolar' ? 'Dólar' : currency === 'euro' ? 'Euro' : currency === 'usdt' ? 'USDT' : 'Manual';
+            
+            // CORRECCIÓN: Le enseñamos a reconocer la Intervención para su texto
+            let nameShort = 'Manual';
+            if (currency === 'dolar') nameShort = 'Dólar';
+            else if (currency === 'euro') nameShort = 'Euro';
+            else if (currency === 'intervencion') nameShort = 'Intervención';
+            else if (currency === 'usdt') nameShort = 'USDT';
             
             display.innerHTML = `
                 <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm shrink-0 ${iconData.classes}">${iconData.text}</div>
                 <span class="font-bold text-onSurface text-[13px] truncate">${nameShort}</span>
             `;
 
-            // Lógica para mostrar/ocultar los inputs manuales
             const customInputsContainer = document.getElementById('gap-custom-inputs');
             const customBox = document.getElementById(`gap-custom-box-${pos}`);
             
@@ -2860,7 +2923,6 @@
                 customInputsContainer.classList.remove('flex');
             }
 
-            // Cerrar menú si está abierto
             const menu = document.getElementById(`gap-menu-${pos}`);
             if (menu && !menu.classList.contains('hidden')) toggleGapMenu(pos);
 
@@ -2899,9 +2961,11 @@
             let r1 = 0, r2 = 0;
 
             if (gapSelected.s1 === 'custom') r1 = parseFloat(document.getElementById('gap-custom-val-1').value) || 0;
+            else if (gapSelected.s1 === 'intervencion') r1 = rates.intervencion * 1.005;
             else r1 = rates[gapSelected.s1] || 0;
 
             if (gapSelected.s2 === 'custom') r2 = parseFloat(document.getElementById('gap-custom-val-2').value) || 0;
+            else if (gapSelected.s2 === 'intervencion') r2 = rates.intervencion * 1.005;
             else r2 = rates[gapSelected.s2] || 0;
 
             if (r1 === 0 || r2 === 0) {
@@ -3670,23 +3734,68 @@
 
         function drawChart(labels, dataPoints) {
             const ctx = document.getElementById('priceChart').getContext('2d');
-            
-            // Si ya existe un gráfico, destrúyelo antes de pintar uno nuevo
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
+            if (chartInstance) chartInstance.destroy();
 
             const isDark = document.documentElement.classList.contains('dark');
             const rootStyles = getComputedStyle(document.documentElement);
-            
-            // Obtenemos los colores dinámicos del tema elegido
             const primaryColor = rootStyles.getPropertyValue('--color-primary').trim() || '#006a6a';
             const primaryColorTranslucent = rootStyles.getPropertyValue('--color-primary-30').trim() || '#006a6a4d';
 
-            // Crear gradiente bonito del color del tema hacia transparente
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, primaryColorTranslucent);
             gradient.addColorStop(1, isDark ? 'rgba(30, 30, 30, 0)' : 'rgba(250, 253, 252, 0)');
+
+            // Plugin personalizado para dibujar los valores Mínimo y Máximo permanentemente
+            const minMaxPlugin = {
+                id: 'minMaxPlugin',
+                // CORRECCIÓN 1: Dibujar esto ANTES del tooltip para que no lo obstaculice
+                afterDatasetsDraw: (chart) => {
+                    const ctx = chart.ctx;
+                    const meta = chart.getDatasetMeta(0);
+                    const data = chart.data.datasets[0].data;
+                    if (!data || data.length === 0) return;
+
+                    let minVal = Math.min(...data);
+                    let maxVal = Math.max(...data);
+
+                    if (minVal === maxVal) return;
+
+                    let minIdx = data.lastIndexOf(minVal);
+                    let maxIdx = data.indexOf(maxVal);
+
+                    const minPoint = meta.data[minIdx];
+                    const maxPoint = meta.data[maxIdx];
+
+                    ctx.save();
+                    ctx.font = 'bold 12px Roboto, sans-serif';
+
+                    // CORRECCIÓN 2: Usamos el color del tema en vez del gris oscuro
+                    ctx.fillStyle = primaryColor;
+
+                    const drawLabel = (point, val, idx, isMin) => {
+                        if (!point) return;
+                        ctx.textAlign = idx === 0 ? 'left' : (idx === data.length - 1 ? 'right' : 'center');
+                        ctx.textBaseline = isMin ? 'top' : 'bottom';
+
+                        const yOffset = isMin ? 12 : -12;
+                        ctx.fillText('Bs. ' + val.toFixed(2), point.x, point.y + yOffset);
+
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
+                        ctx.fillStyle = isDark
+                            ? `color-mix(in srgb, ${primaryColor}, white 20%)`
+                            : `color-mix(in srgb, ${primaryColor}, black 40%)`;
+                        ctx.fill();
+                        ctx.strokeStyle = primaryColor; // Puntito del color del tema
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    };
+
+                    drawLabel(minPoint, minVal, minIdx, true);
+                    drawLabel(maxPoint, maxVal, maxIdx, false);
+                    ctx.restore();
+                }
+            };
 
             chartInstance = new Chart(ctx, {
                 type: 'line',
@@ -3695,21 +3804,24 @@
                     datasets: [{
                         label: 'Intervención',
                         data: dataPoints,
-                        borderColor: primaryColor, // <-- Línea del color del tema
+                        borderColor: primaryColor,
                         borderWidth: 3,
-                        pointBackgroundColor: primaryColor, // <-- Puntos del color del tema
+                        pointBackgroundColor: primaryColor,
                         pointBorderColor: isDark ? '#1e1e1e' : '#ffffff',
                         pointBorderWidth: 2,
                         pointRadius: 0, 
                         pointHoverRadius: 6, 
                         fill: true,
-                        backgroundColor: gradient, // <-- Sombra del color del tema
+                        backgroundColor: gradient,
                         tension: 0.4 
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: { top: 25, bottom: 25, left: 10, right: 10 } // Espacio para que quepan los textos
+                    },
                     interaction: {
                         mode: 'index',
                         intersect: false,
@@ -3717,15 +3829,13 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: primaryColor, // <-- Fondo del Tooltip del color del tema
+                            backgroundColor: primaryColor,
                             titleFont: { family: 'Roboto', size: 13 },
                             bodyFont: { family: 'Roboto', size: 14, weight: 'bold' },
                             padding: 12,
                             displayColors: false,
                             callbacks: {
-                                label: function(context) {
-                                    return 'Bs. ' + context.parsed.y.toFixed(2);
-                                }
+                                label: function(context) { return 'Bs. ' + context.parsed.y.toFixed(2); }
                             }
                         }
                     },
@@ -3733,11 +3843,12 @@
                         x: { display: false }, 
                         y: { 
                             display: false,
-                            min: Math.min(...dataPoints) * 0.99, 
-                            max: Math.max(...dataPoints) * 1.01
+                            min: Math.min(...dataPoints) * 0.98, 
+                            max: Math.max(...dataPoints) * 1.02
                         }
                     }
-                }
+                },
+                plugins: [minMaxPlugin] // Registramos el plugin aquí
             });
         }
 
@@ -3786,6 +3897,14 @@
             // Inyectar variaciones en la Cabecera
             document.getElementById('chart-main-var').innerHTML = `${iconSvg} ${Math.abs(pct).toFixed(2)}%`;
             document.getElementById('chart-main-var').className = `text-sm font-bold flex items-center gap-0.5 px-2 py-0.5 rounded-lg ${bgClass} ${colorClass}`;
+        }
+
+        function importIntervencionRate() {
+            if (rates.intervencion > 0) {
+                document.getElementById('bank-custom-rate').value = rates.intervencion;
+                calculateBank();
+                showToast("Tasa de intervención importada", "success");
+            }
         }
 
     </script>
