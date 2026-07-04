@@ -297,36 +297,6 @@
                     <span class="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-md font-bold">Oficial</span>
                 </div>
             </button>
-
-            <!-- Tarjeta Intervención Digital (Botón clickeable) -->
-            <button onclick="openChartModal()"
-                class="w-full bg-surfaceVariant/30 rounded-2xl p-4 mb-6 border border-outline/10 flex justify-between items-center hover:bg-surfaceVariant/60 transition-colors text-left group shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 rounded-full bg-primary text-onPrimary shadow-sm flex items-center justify-center text-xl font-bold transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-xs text-outline font-medium group-hover:text-primary transition-colors">Intervención Digital
-                        </p>
-                        <div class="flex items-center gap-2 mt-0.5">
-                            <p class="text-xl font-bold text-onSurface font-mono" id="quote-intervencion">Bs. 0.00</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor"
-                                class="w-4 h-4 text-primary transition-transform duration-300 group-hover:translate-x-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <span class="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-md font-bold">Oficial</span>
-                </div>
-            </button>
         
             <h2 class="text-sm font-bold text-primary uppercase tracking-wider mb-4">Mercados Digitales</h2>
         
@@ -786,11 +756,12 @@
         <div class="relative w-full sm:w-[480px] bg-surface rounded-t-[32px] sm:rounded-[32px] shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[90vh] transform transition-all duration-300 translate-y-full sm:translate-y-10 opacity-0 scale-95"
             id="bank-content">
     
+            <!-- Header con Easter Egg en el Icono -->
             <div class="flex justify-between items-start p-6 pb-2 shrink-0 border-b border-outline/5">
                 <div class="flex items-center gap-4">
-                    <!-- Icono con Easter Egg: Doble clic para modos avanzados -->
-                    <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm select-none"
-                        ondblclick="toggleAdvBank()">
+                    <!-- Icono con ondblclick para el Easter Egg -->
+                    <div class="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm select-none cursor-pointer"
+                        ondblclick="toggleAdvBank()" title="Doble clic para opciones avanzadas">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-7 h-7">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -812,11 +783,12 @@
             </div>
     
             <div class="flex flex-col gap-5 overflow-y-auto p-6 pt-4">
-            
+    
                 <!-- Toggle Switch Modos -->
                 <div class="flex bg-surfaceVariant/40 rounded-xl p-1.5 shadow-inner mb-1">
                     <label class="flex-1 text-center cursor-pointer">
-                        <input type="radio" name="bank-mode" value="buy" checked class="peer hidden" onchange="switchBankMode()">
+                        <input type="radio" name="bank-mode" value="buy" checked class="peer hidden"
+                            onchange="switchBankMode()">
                         <div
                             class="py-2.5 text-xs font-bold rounded-lg peer-checked:bg-surface peer-checked:text-primary peer-checked:shadow transition-all text-onSurface/70">
                             Quiero Divisas</div>
@@ -828,9 +800,10 @@
                             Tengo Bolívares</div>
                     </label>
                 </div>
-            
+    
                 <div>
-                    <label class="text-[11px] font-bold text-primary ml-1" id="bank-input-label">Monto a Comprar (Divisa)</label>
+                    <label class="text-[11px] font-bold text-primary ml-1" id="bank-input-label">Monto a Comprar
+                        (Divisa)</label>
                     <div
                         class="relative mt-1 bg-surfaceVariant/30 rounded-xl border border-outline/10 transition-all focus-within:border-primary/50 focus-within:bg-surfaceVariant/50">
                         <input type="number" id="bank-amount" placeholder="0"
@@ -841,72 +814,64 @@
                             id="bank-input-symbol">USD/EUR</span>
                     </div>
                 </div>
-            
+    
                 <div>
                     <label class="text-[11px] font-bold text-primary ml-1">Método de Compra</label>
                     <div class="grid grid-cols-2 gap-2 mt-1">
-                        <button onclick="setBankMethod('intervencion_digital')" id="btn-intervencion_digital"
-                            class="py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold border border-transparent transition-all bg-primary text-onPrimary shadow-md leading-tight">Intervención
-                            Digital</button>
-                        <button onclick="setBankMethod('menudeo')" id="btn-menudeo"
-                            class="py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight">Menudeo</button>
-            
-                        <!-- Modos Avanzados (Ocultos por defecto) -->
+                        <!-- Botones Base -->
                         <button onclick="setBankMethod('intervencion')" id="btn-intervencion"
-                            class="hidden py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight">Intervención
-                            (Antiguo)</button>
+                            class="py-2.5 px-2.5 rounded-xl text-[13px] font-bold border border-transparent transition-all bg-primary text-onPrimary shadow-md leading-tight">Intervención Digital
+                            </button>
+                        <button onclick="setBankMethod('menudeo')" id="btn-menudeo"
+                            class="py-2.5 px-2.5 rounded-xl text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight">Menudeo</button>
+    
+                        <!-- Botón Easter Egg (Mesa de cambio) -->
                         <button onclick="setBankMethod('mesa')" id="btn-mesa"
-                            class="hidden py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight">Mesa
-                            Cambio (Antiguo)</button>
+                            class="hidden col-span-2 py-2.5 px-2.5 rounded-xl text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight">Mesa
+                            de Cambio</button>
                     </div>
                 </div>
-            
+    
                 <div id="bank-options" class="flex flex-col gap-4">
-            
-                    <!-- NUEVO SELECTOR DE DIVISA (3 Opciones) -->
-                    <div id="bank-currency-selector" class="hidden">
-                        <label class="text-xs text-outline ml-1">Tipo de Divisa</label>
-                        <div class="flex gap-2 mt-1 flex-wrap sm:flex-nowrap">
-                            <label
+    
+                    <!-- Selector Elegante de Divisa / Tasa Manual -->
+                    <div id="bank-currency-selector">
+                        <label class="text-xs text-outline ml-1">Tasa a utilizar</label>
+                        <div class="flex gap-2 mt-1 w-full">
+                            <label id="lbl-bank-dolar"
                                 class="flex items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-1 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
-                                <input type="radio" name="bankCurrency" value="dolar" checked onchange="handleBankCurrencyChange()"
-                                    class="accent-primary w-3.5 h-3.5">
-                                <span class="text-xs font-bold text-onSurface">Dólar</span>
+                                <input type="radio" name="bankCurrency" value="dolar" checked
+                                    onchange="handleBankCurrencyChange()" class="accent-primary w-3.5 h-3.5 shrink-0">
+                                <span class="text-[11px] sm:text-xs font-bold text-onSurface whitespace-nowrap">Dólar
+                                    BCV</span>
                             </label>
-                            <label
-                                class="flex items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-1 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
+    
+                            <label id="lbl-bank-euro"
+                                class="hidden items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-1 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
                                 <input type="radio" name="bankCurrency" value="euro" onchange="handleBankCurrencyChange()"
-                                    class="accent-primary w-3.5 h-3.5">
-                                <span class="text-xs font-bold text-onSurface">Euro</span>
+                                    class="accent-primary w-3.5 h-3.5 shrink-0">
+                                <span class="text-[11px] sm:text-xs font-bold text-onSurface whitespace-nowrap">Euro
+                                    BCV</span>
                             </label>
-                            <label
+    
+                            <label id="lbl-bank-custom"
                                 class="flex items-center justify-center gap-1.5 cursor-pointer bg-surfaceVariant/30 py-2.5 px-1 rounded-xl border border-transparent has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all flex-1">
                                 <input type="radio" name="bankCurrency" value="custom" onchange="handleBankCurrencyChange()"
-                                    class="accent-primary w-3.5 h-3.5">
-                                <span class="text-xs font-bold text-onSurface">Pers.</span>
+                                    class="accent-primary w-3.5 h-3.5 shrink-0">
+                                <span
+                                    class="text-[11px] sm:text-xs font-bold text-onSurface whitespace-nowrap">Personalizada</span>
                             </label>
                         </div>
                     </div>
-            
+    
+                    <!-- Caja de Tasa Manual (Se despliega al seleccionar Personalizada) -->
                     <div id="bank-custom-rate-box" class="hidden">
-                        <label class="text-xs text-outline ml-1">Tasa de Adjudicación Manual (Bs.)</label>
-                        <div class="flex gap-2 mt-1">
-                            <input type="number" id="bank-custom-rate" placeholder="0.00"
-                                class="w-full bg-surfaceVariant/30 border border-outline/20 rounded-xl px-4 py-3 text-onSurface font-mono font-bold focus:ring-1 focus:ring-primary outline-none"
-                                oninput="calculateBank()">
-                            <button onclick="importIntervencionRate()"
-                                class="shrink-0 bg-primary/10 text-primary p-3 rounded-xl hover:bg-primary hover:text-onPrimary transition-colors flex items-center justify-center shadow-sm"
-                                title="Usar tasa de Intervención">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                </svg>
-                            </button>
-                        </div>
+                        <input type="number" id="bank-custom-rate" placeholder="Escribe la tasa (Bs)"
+                            class="w-full bg-surface border border-outline/10 shadow-inner rounded-xl px-4 py-3 text-onSurface font-mono text-sm focus:ring-1 focus:ring-primary outline-none font-bold transition-all"
+                            oninput="calculateBank()">
                     </div>
-            
-                    <div id="bank-withdraw-box" class="hidden pt-2 border-t border-outline/10">
+    
+                    <div id="bank-withdraw-box" class="pt-2 border-t border-outline/10">
                         <div class="flex justify-between items-center mb-2">
                             <label class="flex items-center gap-2 cursor-pointer select-none">
                                 <div class="relative flex items-center">
@@ -914,15 +879,16 @@
                                         class="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-outline transition-all checked:border-primary checked:bg-primary"
                                         onchange="toggleBankWithdraw()">
                                     <svg class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="4" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                                        stroke-linejoin="round" width="12" height="12">
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                <span class="text-sm text-onSurface font-medium">Incluir comisión de retiro (Efectivo)</span>
+                                <span class="text-sm text-onSurface font-medium">Incluir comisión de retiro
+                                    (Efectivo)</span>
                             </label>
                         </div>
-                        <!-- NUEVO: Los botones de retiro inician ocultos -->
                         <div id="bank-withdraw-options" class="hidden flex gap-2 ml-7 mt-2 transition-all">
                             <button onclick="setWithdrawPct(3.0)" id="btn-w-30"
                                 class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-primary bg-primary text-onPrimary transition-all">3%</button>
@@ -931,7 +897,7 @@
                         </div>
                     </div>
                 </div>
-            
+    
                 <div class="mt-auto p-5 rounded-2xl border transition-colors flex flex-col gap-2 shrink-0 relative overflow-hidden"
                     style="background-color: var(--color-primary-10); border-color: var(--color-primary-30);">
                     <div class="flex justify-between text-sm relative z-10">
@@ -950,7 +916,8 @@
                     <div class="flex justify-between items-end relative z-10">
                         <span class="text-sm font-bold text-primary" id="res-total-label">Total a Pagar:</span>
                         <div class="text-right">
-                            <span class="block text-2xl font-bold text-primary font-mono leading-none" id="res-total">0.00</span>
+                            <span class="block text-2xl font-bold text-primary font-mono leading-none"
+                                id="res-total">0.00</span>
                             <span class="text-xs text-primary font-bold opacity-80" id="res-total-symbol">Bolívares</span>
                         </div>
                     </div>
@@ -1997,9 +1964,6 @@
                 document.getElementById('quote-usdt-compra').innerText = 'Bs. ' + formatNumber(rates.usdt_compra);
                 document.getElementById('quote-usdt-venta').innerText = 'Bs. ' + formatNumber(rates.usdt_venta);
                 
-                // Actualiza el de Intervención
-                document.getElementById('quote-intervencion').innerText = 'Bs. ' + formatNumber(rates.intervencion);
-                
                 // RESTAURADO: Muestra la hora de sincronización global
                 document.getElementById('quote-time').innerText = lastSyncTime;
             }
@@ -2133,7 +2097,7 @@
             } else if (currentCurrency === 'custom') {
                 rate = parseFloat(ui.inputCustomRate.value) || 0;
             } else if (currentCurrency === 'intervencion') {
-                rate = rates.intervencion * 1.005;
+                rate = rates.dolar * 1.005;
             } else {
                 rate = rates[currentCurrency];
             }
@@ -2395,9 +2359,9 @@
             if(rates.dolar) document.getElementById('menu-rate-dolar').innerText = formatNumber(rates.dolar) + ' Bs';
             if(rates.euro) document.getElementById('menu-rate-euro').innerText = formatNumber(rates.euro) + ' Bs';
             if(rates.usdt) document.getElementById('menu-rate-usdt').innerText = formatNumber(rates.usdt) + ' Bs';
-            if(rates.intervencion) {
+            if (rates.dolar) { // Cambiar rates.intervencion por rates.dolar
                 const el = document.getElementById('menu-rate-intervencion');
-                if(el) el.innerText = formatNumber(rates.intervencion * 1.005) + ' Bs';
+                if (el) el.innerText = formatNumber(rates.dolar * 1.005) + ' Bs'; // BCV + 0.5%
             }
 
             const rateDisplay = document.getElementById('selected-currency-rate');
@@ -2407,7 +2371,7 @@
             } else {
                 // CORRECCIÓN: Si hay una tasa histórica activa, mostrarla con un distintivo
                 let rate = isHistoricalActive ? historicalRateValue : rates[currentCurrency];
-                if (currentCurrency === 'intervencion' && !isHistoricalActive) rate *= 1.005;
+                if (currentCurrency === 'intervencion' && !isHistoricalActive) rate = rates.dolar * 1.005;
 
                 rateDisplay.innerText = `Bs. ${formatNumber(rate)}`;
                 
@@ -2598,7 +2562,7 @@
         });
 
         // --- LOGICA DEL MODAL BANCARIO ---
-        let bankMethod = 'intervencion_digital';
+        let bankMethod = 'intervencion'; 
         let bankCalcMode = 'buy'; 
         let bankWithdrawPct = 3.0; 
         let advBankEnabled = false; // Estado del Easter Egg
@@ -2633,19 +2597,15 @@
         // Control del Easter Egg
         function toggleAdvBank() {
             advBankEnabled = !advBankEnabled;
-            const btnInt = document.getElementById('btn-intervencion');
             const btnMesa = document.getElementById('btn-mesa');
             
             if (advBankEnabled) {
-                btnInt.classList.remove('hidden');
                 btnMesa.classList.remove('hidden');
-                showToast("Modos avanzados activados", "success");
+                showToast("Mesa de Cambio activada", "success");
             } else {
-                btnInt.classList.add('hidden');
                 btnMesa.classList.add('hidden');
-                // Si estaba usando un modo avanzado, regresarlo al normal
-                if (bankMethod === 'intervencion' || bankMethod === 'mesa') {
-                    setBankMethod('intervencion_digital');
+                if (bankMethod === 'mesa') {
+                    setBankMethod('intervencion');
                 }
                 showToast("Modos avanzados ocultos", "success");
             }
@@ -2680,62 +2640,60 @@
         function setBankMethod(method) {
             bankMethod = method;
             
-            const btnStylesActive = "py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold border border-transparent transition-all bg-primary text-onPrimary shadow-md leading-tight";
-            const btnStylesInactive = "py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight";
+            const btnStylesActive = "py-2.5 px-2.5 rounded-xl text-[13px] font-bold border border-transparent transition-all bg-primary text-onPrimary shadow-md leading-tight";
+            const btnStylesInactive = "py-2.5 px-2.5 rounded-xl text-[13px] font-bold border border-outline/20 transition-all text-onSurface hover:bg-surfaceVariant bg-transparent leading-tight";
             
-            ['intervencion_digital', 'menudeo', 'intervencion', 'mesa'].forEach(m => {
+            ['intervencion', 'menudeo', 'mesa'].forEach(m => {
                 const btn = document.getElementById(`btn-${m}`);
-                if (!btn) return;
-                
-                // Aplicar estilo de color base
-                btn.className = (m === method) ? btnStylesActive : btnStylesInactive;
-                
-                // Forzar ocultamiento si es un botón de easter egg y no está activado
-                if ((m === 'intervencion' || m === 'mesa') && !advBankEnabled) {
-                    btn.classList.add('hidden');
+                if (btn) {
+                    btn.className = (m === method) ? btnStylesActive : btnStylesInactive;
+                    // Forzar ocultamiento del easter egg si no está activo
+                    if (m === 'mesa' && !advBankEnabled) {
+                        btn.classList.add('hidden');
+                    }
                 }
             });
 
-            const currSelector = document.getElementById('bank-currency-selector');
-            const customRateBox = document.getElementById('bank-custom-rate-box');
+            const lblEuro = document.getElementById('lbl-bank-euro');
             const withdrawBox = document.getElementById('bank-withdraw-box');
 
-            // Logica del Selector de Monedas
-            if (method === 'menudeo' || method === 'mesa') {
-                currSelector.classList.remove('hidden');
-            } else {
-                currSelector.classList.add('hidden');
-                document.querySelector('input[name="bankCurrency"][value="dolar"]').checked = true; // Reiniciar a dolar
+            if (method === 'intervencion' || method === 'menudeo') {
+                // Ocultar opción Euro
+                lblEuro.classList.add('hidden');
+                lblEuro.classList.remove('flex');
+                
+                // Si el usuario tenía seleccionado Euro, lo regresamos a Dólar
+                const currentRadio = document.querySelector('input[name="bankCurrency"]:checked').value;
+                if (currentRadio === 'euro') {
+                    document.querySelector('input[name="bankCurrency"][value="dolar"]').checked = true;
+                }
+            } else if (method === 'mesa') {
+                // Mostrar opción Euro
+                lblEuro.classList.remove('hidden');
+                lblEuro.classList.add('flex');
+                
+                // Los bancos en Mesa de Cambio siempre tienen tasas distintas, forzamos "Pers."
+                document.querySelector('input[name="bankCurrency"][value="custom"]').checked = true;
             }
 
-            // Lógica de Tasa de Adjudicación Manual
-            if (method === 'intervencion_digital') {
-                customRateBox.classList.remove('hidden');
-                document.getElementById('bank-custom-rate').placeholder = "Tasa adjudicación (Bs)";
-            } else {
-                // Delegar al handler de la divisa
-                handleBankCurrencyChange(); 
-            }
-
-            // Lógica del Panel de Retiro en Efectivo
-            if (method === 'intervencion_digital') {
+            if (method === 'intervencion') {
                 withdrawBox.classList.add('hidden');
             } else {
                 withdrawBox.classList.remove('hidden');
             }
             
-            calculateBank();
+            handleBankCurrencyChange();
         }
 
         function handleBankCurrencyChange() {
             const currencyType = document.querySelector('input[name="bankCurrency"]:checked').value;
-            const customRateBox = document.getElementById('bank-custom-rate-box');
+            const customBox = document.getElementById('bank-custom-rate-box');
             
-            if (currencyType === 'custom' && (bankMethod === 'menudeo' || bankMethod === 'mesa')) {
-                customRateBox.classList.remove('hidden');
-                document.getElementById('bank-custom-rate').placeholder = "Tasa personalizada (Bs)";
-            } else if (bankMethod !== 'intervencion_digital') {
-                customRateBox.classList.add('hidden');
+            if (currencyType === 'custom') {
+                customBox.classList.remove('hidden');
+                setTimeout(() => document.getElementById('bank-custom-rate').focus(), 50);
+            } else {
+                customBox.classList.add('hidden');
             }
             calculateBank();
         }
@@ -2768,31 +2726,26 @@
             const currencyType = document.querySelector('input[name="bankCurrency"]:checked').value;
             const customRateVal = parseFloat(document.getElementById('bank-custom-rate').value) || 0;
             
-            let rate = 0, commBankPct = 0, labelComm = "";
+            let rate = 0;
+            
+            if (currencyType === 'dolar') rate = rates.dolar;
+            else if (currencyType === 'euro') rate = rates.euro;
+            else if (currencyType === 'custom') rate = customRateVal;
 
-            if (bankMethod === 'intervencion_digital') {
-                rate = customRateVal;
+            let commBankPct = 0, labelComm = "";
+
+            if (bankMethod === 'intervencion') {
                 commBankPct = 0.005; 
                 labelComm = "Comisión (0.5%):";
             } else if (bankMethod === 'menudeo') {
-                if (currencyType === 'dolar') rate = rates.dolar;
-                else if (currencyType === 'euro') rate = rates.euro;
-                else rate = customRateVal;
                 commBankPct = 0.012; 
                 labelComm = "Comisión (1.20%):";
             } else if (bankMethod === 'mesa') {
-                if (currencyType === 'dolar') rate = rates.dolar;
-                else if (currencyType === 'euro') rate = rates.euro;
-                else rate = customRateVal;
                 commBankPct = 0.0012; 
                 labelComm = "Comisión (0.12%):";
-            } else if (bankMethod === 'intervencion') {
-                rate = rates.dolar; 
-                commBankPct = 0.005; 
-                labelComm = "Comisión (0.5%):";
             }
 
-            if (rate === 0) {
+            if (!rate || rate === 0) {
                 document.getElementById('res-base').innerText = '0.00 Bs';
                 document.getElementById('res-comm').innerText = '0.00 Bs';
                 document.getElementById('res-withdraw').innerText = '0.00 Bs';
@@ -2802,7 +2755,7 @@
 
             let commWithdrawPct = 0;
             const withdrawCheck = document.getElementById('bank-withdraw-check');
-            if (bankMethod !== 'intervencion_digital' && withdrawCheck && withdrawCheck.checked) {
+            if (bankMethod !== 'intervencion' && withdrawCheck && withdrawCheck.checked) {
                 commWithdrawPct = bankWithdrawPct / 100;
             }
 
@@ -3004,11 +2957,11 @@
             let r1 = 0, r2 = 0;
 
             if (gapSelected.s1 === 'custom') r1 = parseFloat(document.getElementById('gap-custom-val-1').value) || 0;
-            else if (gapSelected.s1 === 'intervencion') r1 = rates.intervencion * 1.005;
+            else if (gapSelected.s1 === 'intervencion') r1 = rates.dolar * 1.005;
             else r1 = rates[gapSelected.s1] || 0;
 
             if (gapSelected.s2 === 'custom') r2 = parseFloat(document.getElementById('gap-custom-val-2').value) || 0;
-            else if (gapSelected.s2 === 'intervencion') r2 = rates.intervencion * 1.005;
+            else if (gapSelected.s2 === 'intervencion') r2 = rates.dolar * 1.005;
             else r2 = rates[gapSelected.s2] || 0;
 
             if (r1 === 0 || r2 === 0) {
